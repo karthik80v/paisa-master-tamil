@@ -31,12 +31,16 @@ export class StockAnalysisComponent implements OnInit {
   // Signal for CAP filter
   capFilter = signal<string>('ALL');
 
+  // Signal for favourite filter
+  favouriteFilter = signal<'ALL' | 'FAVOURITE'>('ALL');
+
   // Computed signal for filtered stocks
   filteredStocks = computed(() => {
     const allStocks = this.stocks();
     const search = this.searchSymbol().toLowerCase();
     const filter = this.considerationFilter();
     const capVal = this.capFilter();
+    const favFilter = this.favouriteFilter();
 
     const filtered = allStocks.filter(stock => {
       const matchesSearch = !search ||
@@ -45,7 +49,8 @@ export class StockAnalysisComponent implements OnInit {
       const consideration = this.getConsideration(stock);
       const matchesConsideration = filter === 'ALL' || consideration === filter;
       const matchesCap = capVal === 'ALL' || stock.capital === capVal;
-      return matchesSearch && matchesConsideration && matchesCap;
+      const matchesFavourite = favFilter === 'ALL' || stock.favourite;
+      return matchesSearch && matchesConsideration && matchesCap && matchesFavourite;
     });
 
     return filtered.sort((a, b) => {
@@ -67,7 +72,7 @@ export class StockAnalysisComponent implements OnInit {
 
     this.stockService.getStocks().subscribe({
       next: (data) => {
-        this.stocks.set(Array.isArray(data) ? data : []);
+        this.stocks.set(Array.isArray(data) ? data.map(stock => ({ ...stock, favourite: stock.favourite || false })) : []);
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -146,6 +151,10 @@ export class StockAnalysisComponent implements OnInit {
     this.capFilter.set(cap);
   }
 
+  setFavouriteFilter(filter: 'ALL' | 'FAVOURITE'): void {
+    this.favouriteFilter.set(filter);
+  }
+
   // Computed signal for unique CAP values
   uniqueCapValues = computed(() => {
     const allStocks = this.stocks();
@@ -159,5 +168,21 @@ export class StockAnalysisComponent implements OnInit {
   formatPrice(price: string): string {
     const numPrice = parseFloat(price);
     return isNaN(numPrice) ? '-' : '₹' + numPrice.toFixed(2);
+  }
+
+  toggleFavourite(stock: Stock): void {
+    this.stockService.toggleFavourite(stock.id).subscribe({
+      next: () => {
+        // Toggle the favourite status
+        this.stocks.update(stocks =>
+          stocks.map(s => s.id === stock.id ? { ...s, favourite: !s.favourite } : s)
+        );
+      },
+      error: (err) => {
+        console.error('Error toggling favourite:', err);
+        // Optionally show an error message
+        this.error.set('Failed to update favourite status. Please try again.');
+      }
+    });
   }
 }

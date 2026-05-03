@@ -33,4 +33,24 @@ export class StockService {
       })
     );
   }
+
+  toggleFavourite(masterdataId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `${this.authToken}`
+    });
+
+    const body = {
+      user_id: this.userId,
+      masterdata_id: masterdataId
+    };
+
+    return this.http.post('https://paisamastertamil.com/share/favourites/createOrDelete', body, { headers }).pipe(
+      timeout(this.requestTimeoutMs),
+      catchError((error) => {
+        console.error('Error toggling favourite:', error);
+        return throwError(() => new Error('Failed to toggle favourite'));
+      })
+    );
+  }
 }

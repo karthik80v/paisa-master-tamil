@@ -46,8 +46,12 @@
               All
             </button>
           </div>
+          <div class="btn-group" role="group" aria-label="Favourite filters">
+            <button type="button" class="btn btn-outline-danger" [class.active]="favouriteFilter() === 'FAVOURITE'" (click)="setFavouriteFilter('FAVOURITE')">Favourite</button>&nbsp;
+            <button type="button" class="btn btn-outline-secondary" [class.active]="favouriteFilter() === 'ALL'" (click)="setFavouriteFilter('ALL')">All</button>
+          </div>
         </div>
-        @if (searchSymbol() || considerationFilter() !== 'ALL' || capFilter() !== 'ALL') {
+        @if (searchSymbol() || considerationFilter() !== 'ALL' || capFilter() !== 'ALL' || favouriteFilter() !== 'ALL') {
           <small class="text-muted d-block mt-2">
             Showing {{ filteredStocks().length }} result(s)
           </small>
@@ -79,6 +83,7 @@
             <table class="table table-hover align-middle">
               <thead class="table-light">
                 <tr>
+                  <th class="text-center">Favourite</th>
                   <th class="text-center">Consideration</th>
                   <th>Ticker Symbol</th>
                   <th>Company Name</th>
@@ -93,6 +98,9 @@
               <tbody>
                 @for (stock of filteredStocks(); track stock.id) {
                   <tr [ngClass]="getRowClass(stock)">
+                    <td class="text-center">
+                      <i class="bi" [ngClass]="stock.favourite ? 'bi-heart-fill text-danger' : 'bi-heart'" (click)="toggleFavourite(stock)" style="cursor: pointer;"></i>
+                    </td>
                     <td class="text-center">
                       <span class="consideration-circle {{ getConsiderationClass(stock) }}">
                         {{ getConsideration(stock) }}
