@@ -1,0 +1,128 @@
+<div class="container-fluid p-4">
+  <div class="card shadow">
+    <!-- Header -->
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Stock Analysis</h2>
+    </div>
+
+    <div class="card-body">
+      <!-- Search Bar -->
+      <div class="mb-4">
+        <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+          <div class="input-group" style="width: auto;">
+            <span class="input-group-text">
+              <i class="bi bi-search"></i>
+            </span>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search by stock symbol..."
+              [(ngModel)]="searchSymbol"
+              style="width: 250px;"
+            />
+          </div>
+          <div class="btn-group" role="group" aria-label="Consideration filters">
+            <button type="button" class="btn btn-outline-success" [class.active]="considerationFilter() === 'A'" (click)="setConsiderationFilter('A')">A</button>&nbsp;
+            <button type="button" class="btn btn-outline-info" [class.active]="considerationFilter() === 'B'" (click)="setConsiderationFilter('B')">B</button>&nbsp;
+            <button type="button" class="btn btn-outline-warning" [class.active]="considerationFilter() === 'C'" (click)="setConsiderationFilter('C')">C</button>&nbsp;
+            <button type="button" class="btn btn-outline-danger" [class.active]="considerationFilter() === 'D'" (click)="setConsiderationFilter('D')">D</button>&nbsp;
+            <button type="button" class="btn btn-outline-secondary" [class.active]="considerationFilter() === 'ALL'" (click)="setConsiderationFilter('ALL')">All</button>
+          </div>
+          <div class="btn-group" role="group" aria-label="CAP filters">
+            @for (cap of uniqueCapValues(); track cap) {
+              <button 
+                type="button" 
+                class="btn btn-outline-primary" 
+                [class.active]="capFilter() === cap" 
+                (click)="setCapFilter(cap)">
+                {{ cap }}
+              </button>&nbsp;
+            }
+            <button 
+              type="button" 
+              class="btn btn-outline-primary" 
+              [class.active]="capFilter() === 'ALL'" 
+              (click)="setCapFilter('ALL')">
+              All
+            </button>
+          </div>
+        </div>
+        @if (searchSymbol() || considerationFilter() !== 'ALL' || capFilter() !== 'ALL') {
+          <small class="text-muted d-block mt-2">
+            Showing {{ filteredStocks().length }} result(s)
+          </small>
+        }
+      </div>
+
+      <!-- Loading State -->
+      @if (isLoading()) {
+        <div class="alert alert-info d-flex align-items-center" role="alert">
+          <div class="spinner-border me-2" role="status" style="width: 1.5rem; height: 1.5rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span>Loading stock data...</span>
+        </div>
+      }
+
+      <!-- Error State -->
+      @if (error()) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ error() }}
+          <button type="button" class="btn-close" (click)="error.set(null)"></button>
+        </div>
+      }
+
+      <!-- Table -->
+      @if (!isLoading() && !error()) {
+        @if (filteredStocks().length > 0) {
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th class="text-center">Consideration</th>
+                  <th>Ticker Symbol</th>
+                  <th>Company Name</th>
+                  <th>Sector</th>
+                  <th class="text-end">Current Price</th>
+                  <th class="text-end">Best Price</th>
+                  <th class="text-end">Over Price</th>
+                  <th>Cap</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (stock of filteredStocks(); track stock.id) {
+                  <tr [ngClass]="getRowClass(stock)">
+                    <td class="text-center">
+                      <span class="consideration-circle {{ getConsiderationClass(stock) }}">
+                        {{ getConsideration(stock) }}
+                      </span>
+                    </td>
+                    <td>{{ stock.symbol }}</td>
+                    <td class="fw-300">{{ stock.companyname }}</td>
+                    <td>{{ stock.sector }}</td>
+                    <td class="text-end">{{ formatPrice(stock.currentprice) }}</td>
+                    <td class="text-end">{{ formatPrice(stock.bestprice) }}</td>
+                    <td class="text-end">{{ formatPrice(stock.overprice) }}</td>
+                    <td>{{ stock.capital }}</td>
+                    <td>
+                      <small class="text-muted">{{ stock.remarks }}</small>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="alert alert-warning">
+            @if (searchSymbol()) {
+              No stocks found matching "<strong>{{ searchSymbol() }}</strong>".
+            } @else {
+              No stock data available.
+            }
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>
