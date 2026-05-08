@@ -9,7 +9,7 @@ import { Stock } from '../../models/stock.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './stock-analysis.component.html',
-  styleUrls: ['./stock-analysis.component.css'],
+  styleUrls: ['../common-styles.css', './stock-analysis.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StockAnalysisComponent implements OnInit {

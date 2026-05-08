@@ -1,0 +1,97 @@
+<div class="container-fluid p-4">
+  <div class="card shadow">
+    <div class="card-header text-white">
+      <h2 class="mb-0 text-white">Sectorwise Summary</h2>
+    </div>
+
+    <div class="card-body">
+      @if (isLoading()) {
+        <div class="alert alert-info d-flex align-items-center" role="alert">
+          <div class="spinner-border me-2" role="status" style="width: 1.5rem; height: 1.5rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span>Loading sector summary...</span>
+        </div>
+      }
+
+      @if (error()) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ error() }}
+          <button type="button" class="btn-close" (click)="error.set(null)"></button>
+        </div>
+      }
+
+      @if (!isLoading() && !error()) {
+        @if (sectorSummaries().length > 0) {
+          <div class="sectorwise-layout">
+            <div class="table-responsive sectorwise-table">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th></th>
+                    <th>Sector</th>
+                    <th class="text-center">Companies</th>
+                    <th class="text-end">Total Stocks</th>
+                    <th class="text-end">Allocated%</th>
+                    <th class="text-end">Total Current Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (summary of sectorSummaries(); track summary.sector) {
+                    <tr [ngClass]="getAllocationClass(summary)">
+                      <td><span class="sector-color-dot" [style.backgroundColor]="summary.color"></span></td>
+                      <td>{{ summary.sector }}</td>
+                      <td class="text-center">{{ summary.totalCompanies }}</td>
+                      <td class="text-end">{{ summary.totalStocks }}</td>
+                      <td class="text-end">{{ summary.allocatedPercent.toFixed(2) }}%</td>
+                      <td class="text-end">{{ summary.totalCurrentValue }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            <div class="sectorwise-chart">
+              <div class="pie-chart-container">
+                <svg viewBox="0 0 280 280" class="pie-chart" role="img" aria-label="Sector allocation pie chart">
+                  <defs>
+                    <marker id="pie-line-arrow" viewBox="0 0 6 6" refX="6" refY="3" markerWidth="6" markerHeight="6" orient="auto" markerUnits="strokeWidth">
+                      <path d="M0,0 L6,3 L0,6 Z" fill="#000" />
+                    </marker>
+                  </defs>
+                  <circle cx="140" cy="140" r="100" fill="#fff" />
+                  @for (segment of sectorPieSegments(); track segment.sector) {
+                    <g class="pie-segment">
+                      <path [attr.d]="segment.path" [attr.fill]="segment.color"></path>
+                      <line
+                        [attr.x1]="segment.lineStartX"
+                        [attr.y1]="segment.lineStartY"
+                        [attr.x2]="segment.lineEndX"
+                        [attr.y2]="segment.lineEndY"
+                        stroke="#000"
+                        stroke-width="1"
+                        marker-end="url(#pie-line-arrow)"
+                      />
+                      <text
+                        [attr.x]="segment.labelX"
+                        [attr.y]="segment.labelY"
+                        [attr.text-anchor]="segment.textAnchor"
+                        dominant-baseline="middle"
+                        class="pie-segment-label"
+                      >
+                        {{ segment.labelText }}
+                      </text>
+                    </g>
+                  }
+                </svg>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <div class="alert alert-warning">
+            No sectorwise data available.
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

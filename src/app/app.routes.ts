@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { StockAnalysisComponent } from './components/stock-analysis/stock-analysis.component';
 import { PortfolioComponent } from './components/portfolio/portfolio.component';
+import { SectorwiseComponent } from './components/sectorwise/sectorwise.component';
 
 export const routes: Routes = [
   {
@@ -8,12 +9,16 @@ export const routes: Routes = [
     component: StockAnalysisComponent
   },
   {
-    path: 'stocks',
+    path: 'dashboard',
     component: StockAnalysisComponent
   },
   {
     path: 'portfolio',
     component: PortfolioComponent
+  },
+  {
+    path: 'sectorwise',
+    component: SectorwiseComponent
   },
   {
     path: '**',

@@ -12,8 +12,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
           <h1 class="h1-header">My Paisa Master - Stock Analysis Dashboard</h1>
           <nav class="app-nav">
             <ul class="nav-list">
-              <li><a routerLink="/stocks" routerLinkActive="active" class="nav-link">Dashboard</a></li>
+              <li><a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a></li>
               <li><a routerLink="/portfolio" routerLinkActive="active" class="nav-link">Portfolio</a></li>
+              <li><a routerLink="/sectorwise" routerLinkActive="active" class="nav-link">Sectorwise</a></li>
             </ul>
           </nav>
         </div>

@@ -9,7 +9,7 @@ import { PortfolioItem } from '../../models/portfolio.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './portfolio.component.html',
-  styleUrls: ['./portfolio.component.css'],
+  styleUrls: ['../common-styles.css', './portfolio.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PortfolioComponent implements OnInit {

@@ -1,0 +1,201 @@
+/* Common component styles shared across stock analysis, portfolio, and sectorwise screens */
+
+/* Row styling - lighter background colors matching font colors */
+.table tbody tr.row-red,
+.table tbody tr.row-red > td {
+  background-color: #f8d7da !important;
+  color: #dc3545 !important;
+  font-weight: 500 !important;
+}
+
+.table tbody tr.row-red:hover,
+.table tbody tr.row-red:hover > td {
+  background-color: #f5c6cb !important;
+}
+
+.table tbody tr.row-green,
+.table tbody tr.row-green > td {
+  background-color: #d4edda !important;
+  color: #155724 !important;
+  font-weight: 500 !important;
+}
+
+.table tbody tr.row-green:hover,
+.table tbody tr.row-green:hover > td {
+  background-color: #c3e6cb !important;
+}
+
+.table tbody tr.row-amber,
+.table tbody tr.row-amber > td {
+  background-color: #fff3cd !important;
+  color: #856404 !important;
+  font-weight: 500 !important;
+}
+
+.table tbody tr.row-amber:hover,
+.table tbody tr.row-amber:hover > td {
+  background-color: #ffeeba !important;
+}
+
+.table tbody tr.row-blue,
+.table tbody tr.row-blue > td {
+  background-color: #d1ecf1 !important;
+  color: #0c5460 !important;
+  font-weight: 500 !important;
+}
+
+.table tbody tr.row-blue:hover,
+.table tbody tr.row-blue:hover > td {
+  background-color: #bee5eb !important;
+}
+
+/* Table styling */
+.table {
+  margin-bottom: 0;
+}
+
+.table tbody tr:not(.row-red):not(.row-green):not(.row-amber):not(.row-blue),
+.table tbody tr:not(.row-red):not(.row-green):not(.row-amber):not(.row-blue) > td {
+  background-color: transparent !important;
+}
+
+.table thead th {
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+  transform: none;
+}
+
+/* Badge styling */
+.badge {
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.consideration-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  font-weight: 700;
+  color: #fff;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.consideration-a {
+  background-color: #28a745 !important;
+}
+
+.consideration-b {
+  background-color: #0D56F2 !important;
+}
+
+.consideration-c {
+  background-color: #e39b0a !important;
+}
+
+.consideration-d {
+  background-color: #dc3545 !important;
+}
+
+/* Code styling for symbol */
+code {
+  background-color: #f8f9fa;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Card styling */
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.card-header {
+  border-bottom: 3px solid #764ba2;
+  background-color: #764ba2;
+  color: white;
+}
+
+.card-header h2 {
+  color: white !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Input group styling */
+.input-group {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border-radius: 0.375rem;
+}
+
+.input-group .form-control {
+  border-color: #dee2e6;
+}
+
+.input-group .form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+
+  .table tbody td {
+    padding: 0.5rem;
+  }
+}
+
+/* Loading spinner */
+.spinner-border {
+  color: #764ba2;
+}
+
+/* Alert styling */
+.alert {
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
