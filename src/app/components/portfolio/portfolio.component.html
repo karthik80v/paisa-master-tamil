@@ -2,7 +2,7 @@
   <div class="card shadow">
     <!-- Header -->
     <div class="card-header text-white">
-      <h2 class="mb-0">Stock Analysis</h2>
+      <h2 class="mb-0">Portfolio</h2>
     </div>
 
     <div class="card-body">
@@ -30,30 +30,26 @@
           </div>
           <div class="btn-group" role="group" aria-label="CAP filters">
             @for (cap of uniqueCapValues(); track cap) {
-              <button 
-                type="button" 
-                class="btn btn-outline-primary" 
-                [class.active]="capFilter() === cap" 
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                [class.active]="capFilter() === cap"
                 (click)="setCapFilter(cap)">
                 {{ cap }}
               </button>&nbsp;
             }
-            <button 
-              type="button" 
-              class="btn btn-outline-primary" 
-              [class.active]="capFilter() === 'ALL'" 
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              [class.active]="capFilter() === 'ALL'"
               (click)="setCapFilter('ALL')">
               All
             </button>
           </div>
-          <div class="btn-group" role="group" aria-label="Favourite filters">
-            <button type="button" class="btn btn-outline-danger" [class.active]="favouriteFilter() === 'FAVOURITE'" (click)="setFavouriteFilter('FAVOURITE')">Favourite</button>&nbsp;
-            <button type="button" class="btn btn-outline-secondary" [class.active]="favouriteFilter() === 'ALL'" (click)="setFavouriteFilter('ALL')">All</button>
-          </div>
         </div>
-        @if (searchSymbol() || considerationFilter() !== 'ALL' || capFilter() !== 'ALL' || favouriteFilter() !== 'ALL') {
+        @if (searchSymbol() || considerationFilter() !== 'ALL' || capFilter() !== 'ALL') {
           <small class="text-muted d-block mt-2">
-            Showing {{ filteredStocks().length }} result(s)
+            Showing {{ filteredPortfolio().length }} result(s)
           </small>
         }
       </div>
@@ -64,7 +60,7 @@
           <div class="spinner-border me-2" role="status" style="width: 1.5rem; height: 1.5rem;">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <span>Loading stock data...</span>
+          <span>Loading portfolio data...</span>
         </div>
       }
 
@@ -78,16 +74,16 @@
 
       <!-- Table -->
       @if (!isLoading() && !error()) {
-        @if (filteredStocks().length > 0) {
+        @if (filteredPortfolio().length > 0) {
           <div class="table-responsive">
             <table class="table table-hover align-middle">
               <thead class="table-light">
                 <tr>
-                  <th class="text-center">Favourite</th>
                   <th class="text-center">Consideration</th>
                   <th>Ticker Symbol</th>
                   <th>Company Name</th>
                   <th>Sector</th>
+                  <th class="text-end">Total Stocks</th>
                   <th class="text-end">Current Price</th>
                   <th class="text-end">Best Price</th>
                   <th class="text-end">Over Price</th>
@@ -96,25 +92,23 @@
                 </tr>
               </thead>
               <tbody>
-                @for (stock of filteredStocks(); track stock.id) {
-                  <tr [ngClass]="getRowClass(stock)">
+                @for (item of filteredPortfolio(); track item.id) {
+                  <tr [ngClass]="getRowClass(item)">
                     <td class="text-center">
-                      <i class="bi" [ngClass]="stock.favourite ? 'bi-heart-fill text-danger' : 'bi-heart'" (click)="toggleFavourite(stock)" style="cursor: pointer;"></i>
-                    </td>
-                    <td class="text-center">
-                      <span class="consideration-circle {{ getConsiderationClass(stock) }}">
-                        {{ getConsideration(stock) }}
+                      <span class="consideration-circle {{ getConsiderationClass(item) }}">
+                        {{ getConsideration(item.masterdata) }}
                       </span>
                     </td>
-                    <td>{{ stock.symbol }}</td>
-                    <td class="fw-300">{{ stock.companyname }}</td>
-                    <td>{{ stock.sector }}</td>
-                    <td class="text-end">{{ formatPrice(stock.currentprice) }}</td>
-                    <td class="text-end">{{ formatPrice(stock.bestprice) }}</td>
-                    <td class="text-end">{{ formatPrice(stock.overprice) }}</td>
-                    <td>{{ stock.capital }}</td>
+                    <td>{{ item.masterdata.symbol }}</td>
+                    <td class="fw-300">{{ item.masterdata.companyname }}</td>
+                    <td>{{ item.masterdata.sector }}</td>
+                    <td class="text-end">{{ item.noofstocks }}</td>
+                    <td class="text-end">{{ formatPrice(item.masterdata.currentprice) }}</td>
+                    <td class="text-end">{{ formatPrice(item.masterdata.bestprice) }}</td>
+                    <td class="text-end">{{ formatPrice(item.masterdata.overprice) }}</td>
+                    <td>{{ item.masterdata.capital }}</td>
                     <td>
-                      <small class="text-muted">{{ stock.remarks }}</small>
+                      <small class="text-muted">{{ item.masterdata.remarks }}</small>
                     </td>
                   </tr>
                 }
@@ -124,9 +118,9 @@
         } @else {
           <div class="alert alert-warning">
             @if (searchSymbol()) {
-              No stocks found matching "<strong>{{ searchSymbol() }}</strong>".
+              No portfolio items found matching "<strong>{{ searchSymbol() }}</strong>".
             } @else {
-              No stock data available.
+              No portfolio data available.
             }
           </div>
         }
