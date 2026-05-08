@@ -67,7 +67,7 @@ export class SectorwiseComponent implements OnInit {
       const midAngle = startAngle + angle / 2;
       const isFullCircle = angle >= 359.99;
       const largeArcFlag = angle > 180 ? 1 : 0;
-      const radius = 100;
+      const radius = 80;
       const center = 140;
       const lineStartRadius = radius - 10;
       const lineEndRadius = radius + 20;
@@ -113,7 +113,7 @@ export class SectorwiseComponent implements OnInit {
   }
 
   getAllocationClass(summary: SectorSummary): string {
-    return summary.allocatedPercent > 5 ? 'row-red' : 'row-green';
+    return summary.allocatedPercent > 16 ? 'row-red' : 'row-green';
   }
 
   private loadSectorData(): void {
