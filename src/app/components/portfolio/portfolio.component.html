@@ -84,7 +84,7 @@
                   <th>Company Name</th>
                   <th>Sector</th>
                   <th class="text-end">Total Stocks</th>
-                  <th class="text-end">Current Value</th>
+                  <th class="text-end">Investment Value</th>
                   <th class="text-end">Current Price</th>
                   <th class="text-end">Best Price</th>
                   <th class="text-end">Over Price</th>
@@ -104,7 +104,7 @@
                     <td class="fw-300">{{ item.masterdata.companyname }}</td>
                     <td>{{ item.masterdata.sector }}</td>
                     <td class="text-end">{{ item.noofstocks }}</td>
-                    <td class="text-end">{{  formatPrice(((+item.noofstocks) * (+item.masterdata.currentprice)).toString()) }}</td>
+                    <td class="text-end">{{ formatPrice(((+item.noofstocks) * (+item.masterdata.currentprice)).toString()) }}</td>
                     <td class="text-end">{{ formatPrice(item.masterdata.currentprice) }}</td>
                     <td class="text-end">{{ formatPrice(item.masterdata.bestprice) }}</td>
                     <td class="text-end">{{ formatPrice(item.masterdata.overprice) }}</td>
