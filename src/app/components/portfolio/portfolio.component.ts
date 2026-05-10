@@ -39,10 +39,12 @@ export class PortfolioComponent implements OnInit {
     const capVal = this.capFilter();
 
     const filtered = allItems.filter(item => {
-      const stock = item.masterdata;
-      const matchesSearch = !search ||
+    const stock = item.masterdata;
+    const matchesSearch = !search ||
         stock.symbol.toLowerCase().includes(search) ||
-        stock.companyname.toLowerCase().includes(search);
+        stock.companyname.toLowerCase().includes(search) ||
+        stock.sector.toLowerCase().includes(search);
+
       const consideration = this.getConsideration(stock);
       const matchesConsideration = filter === 'ALL' || consideration === filter;
       const matchesCap = capVal === 'ALL' || stock.capital === capVal;

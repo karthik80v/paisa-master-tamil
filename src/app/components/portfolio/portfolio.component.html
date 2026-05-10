@@ -24,14 +24,14 @@
           </div>
           <div class="btn-group" role="group" >
             <button type="button" class="btn btn-outline-secondary" (click)="clearSearch()">Clear</button>
-          </div>
+          </div>&nbsp;
           <div class="btn-group" role="group" aria-label="Consideration filters">
             <button type="button" class="btn btn-outline-success" [class.active]="considerationFilter() === 'A'" (click)="setConsiderationFilter('A')">A</button>&nbsp;
             <button type="button" class="btn btn-outline-info" [class.active]="considerationFilter() === 'B'" (click)="setConsiderationFilter('B')">B</button>&nbsp;
             <button type="button" class="btn btn-outline-warning" [class.active]="considerationFilter() === 'C'" (click)="setConsiderationFilter('C')">C</button>&nbsp;
             <button type="button" class="btn btn-outline-danger" [class.active]="considerationFilter() === 'D'" (click)="setConsiderationFilter('D')">D</button>&nbsp;
             <button type="button" class="btn btn-outline-secondary" [class.active]="considerationFilter() === 'ALL'" (click)="setConsiderationFilter('ALL')">All</button>
-          </div>
+          </div>&nbsp;
           <div class="btn-group" role="group" aria-label="CAP filters">
             @for (cap of uniqueCapValues(); track cap) {
               <button

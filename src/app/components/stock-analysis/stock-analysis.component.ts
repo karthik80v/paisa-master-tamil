@@ -43,9 +43,11 @@ export class StockAnalysisComponent implements OnInit {
     const favFilter = this.favouriteFilter();
 
     const filtered = allStocks.filter(stock => {
-      const matchesSearch = !search ||
+    const matchesSearch = !search ||
         stock.symbol.toLowerCase().includes(search) ||
-        stock.companyname.toLowerCase().includes(search);
+        stock.companyname.toLowerCase().includes(search) ||
+        stock.sector.toLowerCase().includes(search);
+
       const consideration = this.getConsideration(stock);
       const matchesConsideration = filter === 'ALL' || consideration === filter;
       const matchesCap = capVal === 'ALL' || stock.capital === capVal;
