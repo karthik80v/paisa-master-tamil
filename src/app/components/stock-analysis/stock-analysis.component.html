@@ -17,9 +17,13 @@
               type="text"
               class="form-control"
               placeholder="Search by stock symbol..."
-              [(ngModel)]="searchSymbol"
+              [ngModel]="searchSymbol()"
+              (ngModelChange)="searchSymbol.set($event)"
               style="width: 250px;"
             />
+          </div>
+          <div class="btn-group" role="group" >
+            <button type="button" class="btn btn-outline-secondary" (click)="clearSearch()">Clear</button>
           </div>
           <div class="btn-group" role="group" aria-label="Consideration filters">
             <button type="button" class="btn btn-outline-success" [class.active]="considerationFilter() === 'A'" (click)="setConsiderationFilter('A')">A</button>&nbsp;

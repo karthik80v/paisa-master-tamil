@@ -32,8 +32,8 @@
                     <th>Sector</th>
                     <th class="text-center">Companies</th>
                     <th class="text-end">Total Stocks</th>
+                    <th class="text-end">Investment Value</th>
                     <th class="text-end">Allocated%</th>
-                    <th class="text-end">Total Current Value</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,8 +43,8 @@
                       <td>{{ summary.sector }}</td>
                       <td class="text-center">{{ summary.totalCompanies }}</td>
                       <td class="text-end">{{ summary.totalStocks }}</td>
-                      <td class="text-end">{{ summary.allocatedPercent.toFixed(2) }}%</td>
                       <td class="text-end">{{ summary.totalCurrentValue }}</td>
+                      <td class="text-end">{{ summary.allocatedPercent.toFixed(2) }}%</td>
                     </tr>
                   }
                 </tbody>

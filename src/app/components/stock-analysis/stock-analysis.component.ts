@@ -139,6 +139,10 @@ export class StockAnalysisComponent implements OnInit {
     return 'C';
   }
 
+  clearSearch(): void {
+    this.searchSymbol.set('');
+  }
+
   getConsiderationClass(stock: Stock): string {
     return `consideration-${this.getConsideration(stock).toLowerCase()}`;
   }

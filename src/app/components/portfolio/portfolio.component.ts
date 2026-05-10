@@ -79,6 +79,11 @@ export class PortfolioComponent implements OnInit {
     });
   }
 
+
+  clearSearch(): void {
+    this.searchSymbol.set('');
+  }
+
   /**
    * Determines the background color class based on manual rating and prices
    * For rating 'D', applies red styling with red font color
