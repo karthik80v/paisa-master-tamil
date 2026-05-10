@@ -81,6 +81,18 @@ export class PortfolioComponent implements OnInit {
     });
   }
 
+  protected getTotalInvested(): number {
+    var total = 0;
+    this.portfolio().forEach(item => {
+      const price = parseFloat(item.masterdata.currentprice);
+      const quantity = parseFloat(item.noofstocks);
+      if (!isNaN(price) && !isNaN(quantity)) {
+        total += price * quantity;
+      }
+    });
+
+    return total;
+  }
 
   clearSearch(): void {
     this.searchSymbol.set('');

@@ -50,11 +50,14 @@
               All
             </button>
           </div>&nbsp;
-          <div class="ms-auto">
+          <div>
             <span class="consideration-circle consideration-a">A</span> Undervalued&nbsp;&nbsp;
             <span class="consideration-circle consideration-b">B</span> Fairly Valued&nbsp;&nbsp;
             <span class="consideration-circle consideration-c">C</span> Overvalued&nbsp;&nbsp;
             <span class="consideration-circle consideration-d">D</span> Poor Performance / Non-community
+          </div>&nbsp;
+          <div class="ms-auto">
+            <strong>Current Value: {{ formatPrice(getTotalInvested().toString()) }}</strong>
           </div>
         </div>
         @if (searchSymbol() || considerationFilter() !== 'ALL' || capFilter() !== 'ALL') {
