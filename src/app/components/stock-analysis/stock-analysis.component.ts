@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StockService } from '../../services/stock.service';
 import { Stock } from '../../models/stock.model';
+import { API_CONFIG } from '../../config/api.config';
 
 @Component({
   selector: 'app-stock-analysis',
@@ -18,6 +19,8 @@ export class StockAnalysisComponent implements OnInit {
 
   // Signal for loading state
   isLoading = signal(true);
+
+  apiConfig = API_CONFIG;
 
   // Signal for error state
   error = signal<string | null>(null);
