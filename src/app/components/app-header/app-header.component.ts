@@ -9,7 +9,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     <header class="app-header">
       <div class="container-fluid">
         <div class="header-content">
-          <h1 class="h1-header">My Paisa Master - Stock Analysis Dashboard</h1>
+          <h1 class="h1-header">My Paisa Master</h1>
           <nav class="app-nav">
             <ul class="nav-list">
               <li><a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a></li>

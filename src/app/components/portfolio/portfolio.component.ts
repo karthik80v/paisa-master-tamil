@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, signal, computed, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PortfolioService } from '../../services/portfolio.service';
@@ -31,6 +31,15 @@ export class PortfolioComponent implements OnInit {
   // Signal for CAP filter
   capFilter = signal<string>('ALL');
 
+  // Signal for tracking which row is in edit mode
+  editingRowId = signal<number | null>(null);
+
+  // Signal for the edited stock value
+  editingRowValue = signal<string>('');
+
+  // Signal for tracking save/loading state
+  savingRowId = signal<number | null>(null);
+
   // Computed signal for filtered portfolio
   filteredPortfolio = computed(() => {
     const allItems = this.portfolio();
@@ -58,7 +67,7 @@ export class PortfolioComponent implements OnInit {
     });
   });
 
-  constructor(private portfolioService: PortfolioService) {}
+  constructor(private portfolioService: PortfolioService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.fetchPortfolio();
@@ -180,5 +189,54 @@ export class PortfolioComponent implements OnInit {
   formatPrice(price: string): string {
     const numPrice = parseFloat(price);
     return isNaN(numPrice) ? '-' : '₹' + numPrice.toFixed(2);
+  }
+
+  /**
+   * Start editing a row's stock count
+   */
+  startEditingRow(itemId: number, currentValue: string): void {
+    this.editingRowId.set(itemId);
+    this.editingRowValue.set(currentValue);
+  }
+
+  /**
+   * Cancel editing and revert changes
+   */
+  cancelEditing(): void {
+    this.editingRowId.set(null);
+    this.editingRowValue.set('');
+  }
+
+  /**
+   * Save the updated stock count via API
+   */
+  saveStockCount(item: PortfolioItem, newValue: string): void {
+    const numValue = parseInt(newValue, 10);
+
+    if (isNaN(numValue) || numValue < 0) {
+      this.error.set('Please enter a valid number for stock count.');
+      return;
+    }
+
+    this.savingRowId.set(item.id);
+
+    this.portfolioService.updateStockCount(item.id, numValue).subscribe({
+      next: (response) => {
+        console.log('Stock count updated successfully:', response);
+        // Update the local portfolio data
+        const updatedPortfolio = this.portfolio().map(p =>
+          p.id === item.id ? { ...p, noofstocks: newValue } : p
+        );
+        this.portfolio.set(updatedPortfolio);
+        this.editingRowId.set(null);
+        this.editingRowValue.set('');
+        this.savingRowId.set(null);
+      },
+      error: (err) => {
+        console.error('Error updating stock count:', err);
+        this.error.set('Failed to update stock count. Please try again.');
+        this.savingRowId.set(null);
+      }
+    });
   }
 }

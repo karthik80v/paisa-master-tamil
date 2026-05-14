@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, timeout, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { PortfolioItem } from '../models/portfolio.model';
 import { API_CONFIG } from '../config/api.config';
 
@@ -31,6 +31,29 @@ export class PortfolioService {
       catchError((error) => {
         console.error('Error fetching portfolio:', error);
         return throwError(() => new Error('Failed to fetch portfolio data'));
+      })
+    );
+  }
+
+  /**
+   * Update stock count for a portfolio item
+   */
+  updateStockCount(portfolioItemId: number, noofstocks: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `${this.authToken}`
+    });
+
+    const body = {
+      id: portfolioItemId,
+      noofstocks: noofstocks
+    };
+
+    return this.http.post<any>(this.baseUrl + '/share/favourites/update', body, { headers }).pipe(
+      timeout(this.requestTimeoutMs),
+      catchError((error) => {
+        console.error('Error updating stock count:', error);
+        return throwError(() => new Error('Failed to update stock count'));
       })
     );
   }

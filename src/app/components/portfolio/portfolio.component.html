@@ -103,6 +103,7 @@
                   <th class="text-end">Over Price</th>
                   <th>Cap</th>
                   <th>Remarks</th>
+                  <th class="text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -116,14 +117,60 @@
                     <td>{{ item.masterdata.symbol }}</td>
                     <td class="fw-300">{{ item.masterdata.companyname }}</td>
                     <td>{{ item.masterdata.sector }}</td>
-                    <td class="text-end">{{ item.noofstocks }}</td>
+                    <td class="text-end">
+                      @if (editingRowId() === item.id) {
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          style="width: 100px; margin-left: auto; display: block; text-align: right;"
+                          [ngModel]="editingRowValue()"
+                          (ngModelChange)="editingRowValue.set($event)"
+                          (keyup.enter)="saveStockCount(item, editingRowValue())"
+                          (keyup.escape)="cancelEditing()"
+                          autofocus
+                        />
+                      } @else {
+                        {{ item.noofstocks }}
+                      }
+                    </td>
                     <td class="text-end">{{ formatPrice(((+item.noofstocks) * (+item.masterdata.currentprice)).toString()) }}</td>
                     <td class="text-end">{{ formatPrice(item.masterdata.currentprice) }}</td>
                     <td class="text-end">{{ formatPrice(item.masterdata.bestprice) }}</td>
                     <td class="text-end">{{ formatPrice(item.masterdata.overprice) }}</td>
                     <td>{{ item.masterdata.capital }}</td>
-                    <td>
-                      <small class="text-muted">{{ item.masterdata.remarks }}</small>
+                    <td>{{ item.masterdata.remarks }}</td>
+                    <td class="text-center">
+                      @if (editingRowId() === item.id) {
+                        <div class="d-flex align-items-center gap-2 justify-content-center">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-success"
+                            [disabled]="savingRowId() === item.id"
+                            (click)="saveStockCount(item, editingRowValue())"
+                            title="Save"
+                          >
+                            <i class="bi bi-check-lg"></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-danger"
+                            [disabled]="savingRowId() === item.id"
+                            (click)="cancelEditing()"
+                            title="Cancel"
+                          >
+                            <i class="bi bi-x-lg"></i>
+                          </button>
+                        </div>
+                      } @else {
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-primary"
+                          (click)="startEditingRow(item.id, item.noofstocks)"
+                          title="Edit"
+                        >
+                          <i class="bi bi-pencil-fill"></i>
+                        </button>
+                      }
                     </td>
                   </tr>
                 }
