@@ -52,13 +52,12 @@
             </div>
             <div class="sectorwise-chart">
               <div class="pie-chart-container">
-                <svg viewBox="0 0 280 280" class="pie-chart" role="img" aria-label="Sector allocation pie chart">
+                <svg viewBox="0 0 280 280" class="pie-chart" role="img" aria-label="Sector allocation doughnut chart">
                   <defs>
                     <marker id="pie-line-arrow" viewBox="0 0 6 6" refX="6" refY="3" markerWidth="6" markerHeight="6" orient="auto" markerUnits="strokeWidth">
                       <path d="M0,0 L6,3 L0,6 Z" fill="#000" />
                     </marker>
                   </defs>
-                  <circle cx="140" cy="140" r="100" fill="#fff" />
                   @for (segment of sectorPieSegments(); track segment.sector) {
                     <g class="pie-segment">
                       <path [attr.d]="segment.path" [attr.fill]="segment.color"></path>

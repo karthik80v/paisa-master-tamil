@@ -26,7 +26,14 @@ export class SectorwiseComponent implements OnInit {
   isLoading = signal(true);
   error = signal<string | null>(null);
 
-  private readonly pieColors = ['#764ba2', '#0d6efd', '#198754', '#ffc107', '#dc3545', '#6610f2', '#fd7e14', '#20c997'];
+  private readonly pieColors = [
+    '#764ba2', '#0d6efd', '#198754', '#ffc107', '#dc3545', '#6610f2', '#fd7e14', '#20c997',
+    '#0dcaf0', '#6f42c1', '#e83e8c', '#20c997', '#17a2b8', '#28a745', '#343a40', '#6c757d',
+    '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dfe6e9', '#74b9ff', '#a29bfe',
+    '#fd79a8', '#fdcb6e', '#6c5ce7', '#00b894', '#00cec9', '#74b9ff', '#fab1a0', '#e17055',
+    '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#74B9FF', '#A29BFE', '#FD79A8',
+    '#FDCB6E', '#6C5CE7', '#00B894', '#00CEC9', '#FAB1A0', '#E17055', '#D63031', '#E84393'
+  ];
 
   sectorSummaries = computed(() => {
     const items = this.portfolio();
@@ -67,15 +74,25 @@ export class SectorwiseComponent implements OnInit {
       const midAngle = startAngle + angle / 2;
       const isFullCircle = angle >= 359.99;
       const largeArcFlag = angle > 180 ? 1 : 0;
-      const radius = 80;
+      const outerRadius = 80;
+      const innerRadius = 45;
       const center = 140;
-      const lineStartRadius = radius - 10;
-      const lineEndRadius = radius + 20;
-      const labelRadius = radius + 40;
-      const startX = center + radius * Math.cos((Math.PI / 180) * startAngle);
-      const startY = center + radius * Math.sin((Math.PI / 180) * startAngle);
-      const endX = center + radius * Math.cos((Math.PI / 180) * endAngle);
-      const endY = center + radius * Math.sin((Math.PI / 180) * endAngle);
+      const lineStartRadius = outerRadius + 5;
+      const lineEndRadius = outerRadius + 20;
+      const labelRadius = outerRadius + 25;
+      
+      // Outer arc points
+      const outerStartX = center + outerRadius * Math.cos((Math.PI / 180) * startAngle);
+      const outerStartY = center + outerRadius * Math.sin((Math.PI / 180) * startAngle);
+      const outerEndX = center + outerRadius * Math.cos((Math.PI / 180) * endAngle);
+      const outerEndY = center + outerRadius * Math.sin((Math.PI / 180) * endAngle);
+      
+      // Inner arc points
+      const innerStartX = center + innerRadius * Math.cos((Math.PI / 180) * startAngle);
+      const innerStartY = center + innerRadius * Math.sin((Math.PI / 180) * startAngle);
+      const innerEndX = center + innerRadius * Math.cos((Math.PI / 180) * endAngle);
+      const innerEndY = center + innerRadius * Math.sin((Math.PI / 180) * endAngle);
+      
       const lineStartX = center + lineStartRadius * Math.cos((Math.PI / 180) * midAngle);
       const lineStartY = center + lineStartRadius * Math.sin((Math.PI / 180) * midAngle);
       const lineEndX = center + lineEndRadius * Math.cos((Math.PI / 180) * midAngle);
@@ -83,9 +100,11 @@ export class SectorwiseComponent implements OnInit {
       const labelX = center + labelRadius * Math.cos((Math.PI / 180) * midAngle);
       const labelY = center + labelRadius * Math.sin((Math.PI / 180) * midAngle);
       const textAnchor = Math.cos((Math.PI / 180) * midAngle) >= 0 ? 'start' : 'end';
+      
+      // Create doughnut path
       const path = isFullCircle
-        ? `M ${center} ${center - radius} A ${radius} ${radius} 0 1 1 ${center - 0.01} ${center - radius} A ${radius} ${radius} 0 1 1 ${center} ${center - radius}`
-        : `M ${center} ${center} L ${startX} ${startY} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${endX} ${endY} Z`;
+        ? `M ${center} ${center - outerRadius} A ${outerRadius} ${outerRadius} 0 1 1 ${center - 0.01} ${center - outerRadius} L ${center - 0.01} ${center - innerRadius} A ${innerRadius} ${innerRadius} 0 1 0 ${center} ${center - innerRadius} Z`
+        : `M ${outerStartX} ${outerStartY} A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${outerEndX} ${outerEndY} L ${innerEndX} ${innerEndY} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerStartX} ${innerStartY} Z`;
 
       startAngle = endAngle;
 
