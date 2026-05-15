@@ -96,6 +96,7 @@
                   <th>Ticker Symbol</th>
                   <th>Company Name</th>
                   <th>Sector</th>
+                  <th></th>
                   <th class="text-end">Total Stocks</th>
                   <th class="text-end">Investment Value</th>
                   <th class="text-end">Current Price</th>
@@ -115,8 +116,13 @@
                       </span>
                     </td>
                     <td>{{ item.masterdata.symbol }}</td>
-                    <td class="fw-300">{{ item.masterdata.companyname }}</td>
+                    <td class="fw-200">{{ item.masterdata.companyname }}</td>
                     <td>{{ item.masterdata.sector }}</td>
+                    <td class="text-center">
+                      @if(item.masterdata.manualrating == "Auto" && +item.masterdata.currentprice < +item.masterdata.bestprice - (+item.masterdata.bestprice * apiConfig.underValueThresholdPercent / 100)) {
+                        <i class="bi-emoji-smile"></i>
+                      }
+                    </td>
                     <td class="text-end">
                       @if (editingRowId() === item.id) {
                         <input

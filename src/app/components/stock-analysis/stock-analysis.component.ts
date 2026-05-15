@@ -134,7 +134,7 @@ export class StockAnalysisComponent implements OnInit {
         return 'A';
       }
 
-      if (currentPrice > bestPrice && currentPrice < overPrice) {
+      if (currentPrice >= bestPrice && currentPrice < overPrice) {
         return 'B';
       }
 

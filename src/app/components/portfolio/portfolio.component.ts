@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PortfolioService } from '../../services/portfolio.service';
 import { PortfolioItem } from '../../models/portfolio.model';
+import { API_CONFIG } from '../../config/api.config';
 
 @Component({
   selector: 'app-portfolio',
@@ -15,6 +16,8 @@ import { PortfolioItem } from '../../models/portfolio.model';
 export class PortfolioComponent implements OnInit {
   // Signal for portfolio data
   portfolio = signal<PortfolioItem[]>([]);
+
+  apiConfig = API_CONFIG;
 
   // Signal for loading state
   isLoading = signal(true);

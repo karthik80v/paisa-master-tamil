@@ -1,0 +1,107 @@
+<div class="container">
+  <div class="card shadow">
+    <!-- Header -->
+    <div class="card-header text-white">
+      <h2 class="mb-0 text-white">User Profile</h2>
+    </div>
+
+    <div class="card-body">
+      <!-- Loading State -->
+      @if (isLoading()) {
+        <div class="alert alert-info d-flex align-items-center" role="alert">
+          <div class="spinner-border me-2" role="status" style="width: 1.5rem; height: 1.5rem;">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span>Loading profile data...</span>
+        </div>
+      }
+
+      <!-- Error State -->
+      @if (error()) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ error() }}
+          <button type="button" class="btn-close" (click)="error.set(null)"></button>
+        </div>
+      }
+
+      <!-- Profile Data Display -->
+      @if (!isLoading() && !error() && user()) {
+        <div class="profile-container">
+          <div class="profile-sections-wrapper">
+            <!-- Personal Information Section (Left) -->
+            <div class="profile-section left-section">
+              <div class="section-header">
+                <h3 class="section-title">Personal Information</h3>
+                <a class="hide-link" (click)="togglePersonalDetailsVisibility()">
+                  {{ showPersonalDetails() ? 'Hide' : 'Show' }}
+                </a>
+              </div>
+              <div class="table-responsive">
+                <table class="profile-table">
+                  <tbody>
+                    <tr>
+                      <td class="label-cell">Full Name</td>
+                      <td class="value-cell">{{ user()?.fullname }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Gender</td>
+                      <td class="value-cell">{{ user()?.gender | titlecase }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Date of Birth</td>
+                      <td class="value-cell">
+                        {{ showPersonalDetails() ? formatDate(user()?.dob) : 'X X X X X X X X X X' }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Mobile</td>
+                      <td class="value-cell">
+                        {{ showPersonalDetails() ? (user()?.countrycode + ' ' + user()?.mobile) : 'X X X X X X X X X X' }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Email</td>
+                      <td class="value-cell">
+                        {{ showPersonalDetails() ? user()?.email : 'X X X X X X X X X X' }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Membership Information Section (Right) -->
+            <div class="profile-section right-section">
+              <h3 class="section-title">Membership Information</h3>
+              <div class="table-responsive">
+                <table class="profile-table">
+                  <tbody>
+                    <tr>
+                      <td class="label-cell">Registered On</td>
+                      <td class="value-cell">{{ formatDate(user()?.registeredOn) }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Expiry Date</td>
+                      <td class="value-cell">{{ formatDate(user()?.expiredOn) }}</td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Target Amount</td>
+                      <td class="value-cell">{{ formatCurrency(user()?.targetAmount) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Empty State -->
+      @if (!isLoading() && !error() && !user()) {
+        <div class="alert alert-warning">
+          No profile data available.
+        </div>
+      }
+    </div>
+  </div>
+</div>
