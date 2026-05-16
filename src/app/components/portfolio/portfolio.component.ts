@@ -123,7 +123,7 @@ export class PortfolioComponent implements OnInit {
    * Determines the current consideration value for the row.
    */
   getConsideration(stock: any): 'A' | 'B' | 'C' | 'D' {
-    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'D';
+    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'D'; 
   }
 
   getConsiderationClass(item: PortfolioItem): string {

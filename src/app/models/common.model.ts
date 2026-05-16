@@ -1,4 +1,4 @@
 export interface Consideration {
-    rating: '';
+    rating: 'A' | 'B' | 'C' | 'D';
     rowClass: string;
 }

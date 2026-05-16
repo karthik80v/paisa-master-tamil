@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { Consideration } from "../models/common.model";
 
 export interface StockData {
@@ -7,6 +8,9 @@ export interface StockData {
   overprice: string;
 }
 
+@Injectable({
+  providedIn: 'root'
+})
 export class CommonService {
 
     constructor() { }
