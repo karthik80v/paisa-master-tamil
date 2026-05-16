@@ -129,7 +129,7 @@ export class PortfolioComponent implements OnInit {
         return 'row-green';
       }
 
-      if (currentPrice > bestPrice && currentPrice < overPrice) {
+      if (currentPrice >= bestPrice && currentPrice < overPrice) {
         return 'row-blue';
       }
 
@@ -157,7 +157,7 @@ export class PortfolioComponent implements OnInit {
         return 'A';
       }
 
-      if (currentPrice > bestPrice && currentPrice < overPrice) {
+      if (currentPrice >= bestPrice && currentPrice < overPrice) {
         return 'B';
       }
 

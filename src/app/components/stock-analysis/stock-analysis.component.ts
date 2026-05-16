@@ -106,7 +106,7 @@ export class StockAnalysisComponent implements OnInit {
         return 'row-green';
       }
 
-      if (currentPrice > bestPrice && currentPrice < overPrice) {
+      if (currentPrice >= bestPrice && currentPrice < overPrice) {
         return 'row-blue';
       }
 

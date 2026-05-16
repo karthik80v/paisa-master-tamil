@@ -13,5 +13,5 @@ export interface Stock {
   status: number;
   createdAt: string;
   updatedAt: string;
-  favourite: boolean;
+  favourite: boolean | null;
 }

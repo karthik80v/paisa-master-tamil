@@ -1,0 +1,32 @@
+import { Consideration } from "../models/common.model";
+import { Stock } from "../models/stock.model";
+
+export class CommonService {
+
+    constructor() { }
+
+    getConsideration(stock: Stock): Consideration {
+        if (stock.manualrating === 'D') {
+            return { rating: 'D' as any, rowClass: 'row-red' };
+        }
+
+        if (stock.manualrating === 'Auto') {
+            const currentPrice = parseFloat(stock.currentprice);
+            const bestPrice = parseFloat(stock.bestprice);
+            const overPrice = parseFloat(stock.overprice);
+
+            if (currentPrice < bestPrice) {
+                return { rating: 'A' as any, rowClass: 'row-green' };
+            }
+
+            if (currentPrice >= bestPrice && currentPrice < overPrice) {
+                return { rating: 'B' as any, rowClass: 'row-blue' };
+            }
+
+            return { rating: 'C' as any, rowClass: 'row-amber' };
+        }
+
+        return { rating: 'C' as any, rowClass: 'row-amber' };
+    }
+
+}
