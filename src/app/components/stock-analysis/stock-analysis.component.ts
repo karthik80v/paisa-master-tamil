@@ -2,6 +2,7 @@ import { Component, OnInit, signal, computed, ChangeDetectionStrategy } from '@a
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StockService } from '../../services/stock.service';
+import { CommonService } from '../../services/common.service';
 import { Stock } from '../../models/stock.model';
 import { API_CONFIG } from '../../config/api.config';
 
@@ -65,7 +66,7 @@ export class StockAnalysisComponent implements OnInit {
     });
   });
 
-  constructor(private stockService: StockService) {}
+  constructor(private stockService: StockService, private commonService: CommonService) {}
 
   ngOnInit(): void {
     this.fetchStocks();
@@ -93,55 +94,14 @@ export class StockAnalysisComponent implements OnInit {
    * For rating 'D', applies red styling with red font color
    */
   getRowClass(stock: Stock): string {
-    if (stock.manualrating === 'D') {
-      return 'row-red';
-    }
-
-    if (stock.manualrating === 'Auto') {
-      const currentPrice = parseFloat(stock.currentprice);
-      const bestPrice = parseFloat(stock.bestprice);
-      const overPrice = parseFloat(stock.overprice);
-
-      if (currentPrice < bestPrice) {
-        return 'row-green';
-      }
-
-      if (currentPrice >= bestPrice && currentPrice < overPrice) {
-        return 'row-blue';
-      }
-
-      return 'row-amber';
-    }
-
-    // Default styling for other ratings
-    return '';
+    return this.commonService.getConsideration(stock).rowClass;
   }
 
   /**
    * Determines the current consideration value for the row.
    */
   getConsideration(stock: Stock): 'A' | 'B' | 'C' | 'D' {
-    if (stock.manualrating === 'D') {
-      return 'D';
-    }
-
-    if (stock.manualrating === 'Auto') {
-      const currentPrice = parseFloat(stock.currentprice);
-      const bestPrice = parseFloat(stock.bestprice);
-      const overPrice = parseFloat(stock.overprice);
-
-      if (currentPrice < bestPrice) {
-        return 'A';
-      }
-
-      if (currentPrice >= bestPrice && currentPrice < overPrice) {
-        return 'B';
-      }
-
-      return 'C';
-    }
-
-    return 'C';
+    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'D';
   }
 
   clearSearch(): void {

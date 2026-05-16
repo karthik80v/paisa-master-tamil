@@ -1,11 +1,17 @@
 import { Consideration } from "../models/common.model";
-import { Stock } from "../models/stock.model";
+
+export interface StockData {
+  manualrating: string;
+  currentprice: string;
+  bestprice: string;
+  overprice: string;
+}
 
 export class CommonService {
 
     constructor() { }
 
-    getConsideration(stock: Stock): Consideration {
+    getConsideration(stock: StockData): Consideration {
         if (stock.manualrating === 'D') {
             return { rating: 'D' as any, rowClass: 'row-red' };
         }

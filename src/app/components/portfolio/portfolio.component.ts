@@ -2,6 +2,7 @@ import { Component, OnInit, signal, computed, ChangeDetectionStrategy, ChangeDet
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PortfolioService } from '../../services/portfolio.service';
+import { CommonService } from '../../services/common.service';
 import { PortfolioItem } from '../../models/portfolio.model';
 import { API_CONFIG } from '../../config/api.config';
 
@@ -70,7 +71,7 @@ export class PortfolioComponent implements OnInit {
     });
   });
 
-  constructor(private portfolioService: PortfolioService, private cdr: ChangeDetectorRef) {}
+  constructor(private portfolioService: PortfolioService, private cdr: ChangeDetectorRef, private commonService: CommonService) {}
 
   ngOnInit(): void {
     this.fetchPortfolio();
@@ -115,56 +116,14 @@ export class PortfolioComponent implements OnInit {
    * For rating 'D', applies red styling with red font color
    */
   getRowClass(item: PortfolioItem): string {
-    const stock = item.masterdata;
-    if (stock.manualrating === 'D') {
-      return 'row-red';
-    }
-
-    if (stock.manualrating === 'Auto') {
-      const currentPrice = parseFloat(stock.currentprice);
-      const bestPrice = parseFloat(stock.bestprice);
-      const overPrice = parseFloat(stock.overprice);
-
-      if (currentPrice < bestPrice) {
-        return 'row-green';
-      }
-
-      if (currentPrice >= bestPrice && currentPrice < overPrice) {
-        return 'row-blue';
-      }
-
-      return 'row-amber';
-    }
-
-    // Default styling for other ratings
-    return '';
+    return this.commonService.getConsideration(item.masterdata).rowClass;
   }
 
   /**
    * Determines the current consideration value for the row.
    */
   getConsideration(stock: any): 'A' | 'B' | 'C' | 'D' {
-    if (stock.manualrating === 'D') {
-      return 'D';
-    }
-
-    if (stock.manualrating === 'Auto') {
-      const currentPrice = parseFloat(stock.currentprice);
-      const bestPrice = parseFloat(stock.bestprice);
-      const overPrice = parseFloat(stock.overprice);
-
-      if (currentPrice < bestPrice) {
-        return 'A';
-      }
-
-      if (currentPrice >= bestPrice && currentPrice < overPrice) {
-        return 'B';
-      }
-
-      return 'C';
-    }
-
-    return 'C';
+    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'D';
   }
 
   getConsiderationClass(item: PortfolioItem): string {
