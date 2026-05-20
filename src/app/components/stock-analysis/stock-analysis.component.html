@@ -92,7 +92,7 @@
                   <th>Ticker Symbol</th>
                   <th>Company Name</th>
                   <th>Sector</th>
-                  <th>CP < {{apiConfig.underValueThresholdPercent }}% of BP</th>
+                  <th class="text-center">CP < {{apiConfig.underValueThresholdPercent }}% of BP</th>
                   <th class="text-end">Current Price</th>
                   <th class="text-end">Best Price</th>
                   <th class="text-end">Over Price</th>
@@ -114,7 +114,7 @@
                     <td>{{ stock.symbol }}</td>
                     <td class="fw-300">{{ stock.companyname }}</td>
                     <td>{{ stock.sector }}</td>
-                    <td>
+                    <td class="text-center">
                       @if(stock.manualrating == "Auto" && +stock.currentprice < +stock.bestprice - (+stock.bestprice * apiConfig.underValueThresholdPercent / 100)) {
                         <i class="bi-emoji-smile"></i>
                       }
