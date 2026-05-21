@@ -8,5 +8,6 @@ export const API_CONFIG = {
   authToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODc3LCJpYXQiOjE3Nzc2NDk3MDMsImV4cCI6MTgwMzU2OTcwM30.zI61VCAUPNvmEoImnyNa6Jy5cDjdv4_qlHKOx9copnk',
   userId: 877,
   requestTimeoutMs: 30000,
-  underValueThresholdPercent: 8,
+  underValueThresholdPercent: 5,
+  defaultCountry: { name: 'India', currency: 'INR' } as { name: string; currency: string },
 };

@@ -99,6 +99,45 @@
   overflow-x: auto;
 }
 
+/* Settings Section */
+.settings-section {
+  grid-column: 1;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.setting-value {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-right: 0.5rem;
+}
+
+.setting-input {
+  width: 60px;
+}
+
+.setting-input-currency {
+    width: 250px;
+}
+
+.setting-btn {
+  white-space: nowrap;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .profile-sections-wrapper {

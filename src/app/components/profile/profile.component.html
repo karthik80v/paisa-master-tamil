@@ -92,6 +92,59 @@
                 </table>
               </div>
             </div>
+
+            <!-- Settings Section -->
+            <div class="profile-section settings-section">
+              <h3 class="section-title">Settings</h3>
+              <div class="table-responsive">
+                <table class="profile-table">
+                  <tbody>
+                    <tr>
+                      <td class="label-cell">Extreme Undervalued %</td>
+                      <td class="value-cell">
+                        @if (!isEditingSettings()) {
+                          <span class="setting-value">{{ settingsService.underValueThresholdPercent() }}% from Best Price</span>
+                        } @else {
+                          <input
+                            type="number"
+                            class="form-control form-control-sm setting-input"
+                            [ngModel]="thresholdDraft()"
+                            (ngModelChange)="thresholdDraft.set($event)"
+                            min="1"
+                            max="20"
+                            step="1" />
+                        }
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="label-cell">Default Country</td>
+                      <td class="value-cell">
+                        @if (!isEditingSettings()) {
+                          <span class="setting-value">{{ formatCountryOption(settingsService.defaultCountry()) }}</span>
+                        } @else {
+                          <select
+                            class="form-select form-select-sm setting-input-currency"
+                            [ngModel]="countryDraft()"
+                            (ngModelChange)="countryDraft.set($event)">
+                            @for (option of countryOptions; track option.name) {
+                              <option [value]="option.name">{{ formatCountryOption(option) }}</option>
+                            }
+                          </select>
+                        }
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="settings-actions">
+                @if (!isEditingSettings()) {
+                  <button type="button" class="btn btn-sm btn-primary setting-btn" (click)="editThreshold()">Edit</button>
+                } @else {
+                  <button type="button" class="btn btn-sm btn-secondary setting-btn" (click)="cancelThresholdEdit()">Cancel</button>
+                  <button type="button" class="btn btn-sm btn-success setting-btn" (click)="saveThreshold()">Save</button>
+                }
+              </div>
+            </div>
           </div>
         </div>
       }

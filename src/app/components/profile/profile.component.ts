@@ -1,12 +1,14 @@
 import { Component, OnInit, signal, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../../services/profile.service';
+import { SettingsService, Country } from '../../services/settings.service';
 import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['../common-styles.css', './profile.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -24,7 +26,19 @@ export class ProfileComponent implements OnInit {
   // Signal for personal details visibility
   showPersonalDetails = signal(false);
 
-  constructor(private profileService: ProfileService, private cdr: ChangeDetectorRef) {}
+  // Settings edit state
+  isEditingSettings = signal(false);
+  thresholdDraft = signal<number>(0);
+  countryDraft = signal<string>('India');
+  readonly countryOptions: Country[];
+
+  constructor(
+    private profileService: ProfileService,
+    private cdr: ChangeDetectorRef,
+    public settingsService: SettingsService
+  ) {
+    this.countryOptions = this.settingsService.getCountries();
+  }
 
   ngOnInit(): void {
     this.fetchUserProfile();
@@ -78,5 +92,32 @@ export class ProfileComponent implements OnInit {
 
   togglePersonalDetailsVisibility(): void {
     this.showPersonalDetails.set(!this.showPersonalDetails());
+  }
+
+  editThreshold(): void {
+    this.thresholdDraft.set(this.settingsService.underValueThresholdPercent());
+    this.countryDraft.set(this.settingsService.defaultCountry().name);
+    this.isEditingSettings.set(true);
+  }
+
+  formatCountryOption(country: Country): string {
+    return `${country.name} (${country.currency})`;
+  }
+
+  cancelThresholdEdit(): void {
+    this.isEditingSettings.set(false);
+  }
+
+  saveThreshold(): void {
+    const value = Number(this.thresholdDraft());
+    if (isNaN(value) || value < 0 || value > 100) {
+      return;
+    }
+    this.settingsService.setUnderValueThresholdPercent(value);
+    const selected = this.countryOptions.find(c => c.name === this.countryDraft());
+    if (selected) {
+      this.settingsService.setDefaultCountry(selected);
+    }
+    this.isEditingSettings.set(false);
   }
 }
