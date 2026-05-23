@@ -1,0 +1,42 @@
+<header class="app-header">
+  <div class="container-fluid">
+    <div class="header-content">
+      <h1 class="h1-header">My Paisa Master</h1>
+      <nav class="app-nav">
+        <ul class="nav-list">
+          <li><a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a></li>
+          <li><a routerLink="/portfolio" routerLinkActive="active" class="nav-link">Portfolio</a></li>
+          <li><a routerLink="/sectorwise" routerLinkActive="active" class="nav-link">Sectorwise</a></li>
+          <li><a routerLink="/profile" routerLinkActive="active" class="nav-link">Profile</a></li>
+          <li class="country-menu">
+            <a
+              type="button"
+              class="nav-link country-toggle"
+              [class.open]="isCountryMenuOpen()"
+              (click)="toggleCountryMenu($event)">
+              Country
+              <span class="caret">&#9662;</span>
+            </a>
+            @if (isCountryMenuOpen()) {
+              <ul class="country-submenu">
+                @for (country of countries; track country.name) {
+                  <li>
+                    <a
+                      class="country-item"
+                      [class.selected]="settingsService.defaultCountry().name === country.name"
+                      (click)="selectCountry(country)">
+                      <span class="country-label">{{ country.name }} ({{ country.currency }})</span>
+                      @if (settingsService.defaultCountry().name === country.name) {
+                        <span class="tick" aria-label="Selected">&#10003;</span>
+                      }
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
