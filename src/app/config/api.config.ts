@@ -9,5 +9,5 @@ export const API_CONFIG = {
   userId: 877,
   requestTimeoutMs: 30000,
   underValueThresholdPercent: 5,
-  defaultCountry: { name: 'India', currency: 'INR' } as { name: string; currency: string },
+  defaultCountry: { name: 'India', currency: 'INR', shortname: 'India' } as { name: string; currency: string; shortname: string },
 };

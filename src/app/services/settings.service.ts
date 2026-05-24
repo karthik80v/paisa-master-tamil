@@ -4,6 +4,7 @@ import { API_CONFIG } from '../config/api.config';
 export interface Country {
   name: string;
   currency: string;
+  shortname: string;
 }
 
 const THRESHOLD_KEY = 'app.settings.underValueThresholdPercent';
@@ -18,8 +19,8 @@ export class SettingsService {
   defaultCountry = signal<Country>(API_CONFIG.defaultCountry);
 
   private readonly countries: Country[] = [
-    { name: 'India', currency: 'INR' },
-    { name: 'United States of America', currency: 'USD' }
+    { currency: 'INR', name: 'India', shortname: 'India' },
+    { currency: 'USD', name: 'United States of America', shortname: 'USA' }
   ];
 
   constructor() {

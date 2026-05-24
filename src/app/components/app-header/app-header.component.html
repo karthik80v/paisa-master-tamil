@@ -14,7 +14,7 @@
               class="nav-link country-toggle"
               [class.open]="isCountryMenuOpen()"
               (click)="toggleCountryMenu($event)">
-              Country
+              {{settingsService.defaultCountry().currency}}
               <span class="caret">&#9662;</span>
             </a>
             @if (isCountryMenuOpen()) {
@@ -25,7 +25,7 @@
                       class="country-item"
                       [class.selected]="settingsService.defaultCountry().name === country.name"
                       (click)="selectCountry(country)">
-                      <span class="country-label">{{ country.name }} ({{ country.currency }})</span>
+                      <span class="country-label">{{ country.shortname }} ({{ country.currency }})</span>
                       @if (settingsService.defaultCountry().name === country.name) {
                         <span class="tick" aria-label="Selected">&#10003;</span>
                       }
