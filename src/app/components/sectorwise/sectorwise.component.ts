@@ -27,12 +27,11 @@ export class SectorwiseComponent implements OnInit {
   error = signal<string | null>(null);
 
   private readonly pieColors = [
-    '#764ba2', '#0d6efd', '#198754', '#ffc107', '#dc3545', '#6610f2', '#fd7e14', '#20c997',
-    '#0dcaf0', '#6f42c1', '#e83e8c', '#20c997', '#17a2b8', '#28a745', '#343a40', '#6c757d',
-    '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dfe6e9', '#74b9ff', '#a29bfe',
-    '#fd79a8', '#fdcb6e', '#6c5ce7', '#00b894', '#00cec9', '#74b9ff', '#fab1a0', '#e17055',
-    '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#74B9FF', '#A29BFE', '#FD79A8',
-    '#FDCB6E', '#6C5CE7', '#00B894', '#00CEC9', '#FAB1A0', '#E17055', '#D63031', '#E84393'
+    '#764ba2', '#0d6efd', '#198754', '#ffc107', 
+    '#0dcaf0', '#e83e8c', '#17a2b8', '#BE61CA',
+    '#ff6b6b', '#EFAAC1', '#6610f2', '#dc3545', 
+    '#FF6B6B', '#4ECDC4', '#fd7e14', '#20c997',
+    '#FDCB6E', '#6C5CE7', '#00B894', '#E17055'
   ];
 
   sectorSummaries = computed(() => {
