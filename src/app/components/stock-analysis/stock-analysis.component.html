@@ -89,9 +89,9 @@
                 <tr>
                   <th class="text-center">Favourite</th>
                   <th class="text-center">Consideration</th>
+                  <th>Sector</th>
                   <th>Ticker Symbol</th>
                   <th>Company Name</th>
-                  <th>Sector</th>
                   <th class="text-center">CP < {{apiConfig.underValueThresholdPercent }}% of BP</th>
                   <th class="text-end">Current Price</th>
                   <th class="text-end">Best Price</th>
@@ -111,9 +111,9 @@
                         {{ getConsideration(stock) }}
                       </span>
                     </td>
-                    <td>{{ stock.symbol }}</td>
-                    <td class="fw-300">{{ stock.companyname }}</td>
                     <td>{{ stock.sector }}</td>
+                    <td>{{ stock.symbol }}</td>
+                    <td class="companyname-col">{{ stock.companyname }}</td>
                     <td class="text-center">
                       @if(stock.manualrating == "Auto" && +stock.currentprice < +stock.bestprice - (+stock.bestprice * apiConfig.underValueThresholdPercent / 100)) {
                         <i class="bi-emoji-smile"></i>

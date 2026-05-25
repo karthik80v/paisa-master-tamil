@@ -1,3 +1,11 @@
+/* Restrict company name column width */
+.companyname-col {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Stock analysis-specific styles */
 
 /* Add any stock analysis only overrides here. */

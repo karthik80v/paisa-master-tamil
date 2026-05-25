@@ -1,3 +1,10 @@
+/* Restrict company name column width */
+.companyname-col {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /* Portfolio-specific styles */
 
 /* Add portfolio-specific overrides here. */

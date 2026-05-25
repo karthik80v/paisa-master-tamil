@@ -60,9 +60,16 @@ export class StockAnalysisComponent implements OnInit {
     });
 
     return filtered.sort((a, b) => {
-      const left = this.getConsideration(a);
-      const right = this.getConsideration(b);
-      return left.localeCompare(right);
+      const considerationCompare = this.getConsideration(a)
+        .localeCompare(this.getConsideration(b));
+      if (considerationCompare !== 0) return considerationCompare;
+
+      const sectorCompare = (a.sector || '')
+        .localeCompare(b.sector || '');
+      if (sectorCompare !== 0) return sectorCompare;
+
+      return (a.companyname || '')
+        .localeCompare(b.companyname || '');
     });
   });
 

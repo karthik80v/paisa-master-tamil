@@ -65,9 +65,16 @@ export class PortfolioComponent implements OnInit {
     });
 
     return filtered.sort((a, b) => {
-      const left = this.getConsideration(a.masterdata);
-      const right = this.getConsideration(b.masterdata);
-      return left.localeCompare(right);
+      const considerationCompare = this.getConsideration(a.masterdata)
+        .localeCompare(this.getConsideration(b.masterdata));
+      if (considerationCompare !== 0) return considerationCompare;
+
+      const sectorCompare = (a.masterdata.sector || '')
+        .localeCompare(b.masterdata.sector || '');
+      if (sectorCompare !== 0) return sectorCompare;
+
+      return (a.masterdata.companyname || '')
+        .localeCompare(b.masterdata.companyname || '');
     });
   });
 
