@@ -46,6 +46,25 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
   // Signal for tracking save/loading state
   savingRowId = signal<number | null>(null);
 
+  // Sort state
+  sortColumn = signal<'consideration' | 'sector' | 'companyname' | 'currentprice' | 'capital' | 'investmentvalue' | 'noofstocks' | ''>('');
+  sortDirection = signal<'asc' | 'desc'>('asc');
+
+  setSort(column: 'consideration' | 'sector' | 'companyname' | 'currentprice' | 'capital' | 'investmentvalue' | 'noofstocks') {
+    if (this.sortColumn() === column) {
+      if (this.sortDirection() === 'asc') {
+        this.sortDirection.set('desc');
+      } else {
+        // Third click: reset to default sort
+        this.sortColumn.set('');
+        this.sortDirection.set('asc');
+      }
+    } else {
+      this.sortColumn.set(column);
+      this.sortDirection.set('asc');
+    }
+  }
+
   // Computed signal for filtered portfolio
   filteredPortfolio = computed(() => {
     const allItems = this.portfolio();
@@ -66,7 +85,41 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
       return matchesSearch && matchesConsideration && matchesCap;
     });
 
+    const sortCol = this.sortColumn();
+    const sortDir = this.sortDirection();
     return filtered.sort((a, b) => {
+      let result = 0;
+      if (sortCol) {
+        switch (sortCol) {
+          case 'consideration':
+            result = this.getConsideration(a.masterdata).localeCompare(this.getConsideration(b.masterdata));
+            break;
+          case 'sector':
+            result = (a.masterdata.sector || '').localeCompare(b.masterdata.sector || '');
+            break;
+          case 'companyname':
+            result = (a.masterdata.companyname || '').localeCompare(b.masterdata.companyname || '');
+            break;
+          case 'currentprice':
+            result = (parseFloat(a.masterdata.currentprice) || 0) - (parseFloat(b.masterdata.currentprice) || 0);
+            break;
+          case 'capital':
+            result = (a.masterdata.capital || '').localeCompare(b.masterdata.capital || '');
+            break;
+          case 'investmentvalue': {
+            const aVal = (parseFloat(a.noofstocks) || 0) * (parseFloat(a.masterdata.currentprice) || 0);
+            const bVal = (parseFloat(b.noofstocks) || 0) * (parseFloat(b.masterdata.currentprice) || 0);
+            result = aVal - bVal;
+            break;
+          }
+          case 'noofstocks':
+            result = (parseFloat(a.noofstocks) || 0) - (parseFloat(b.noofstocks) || 0);
+            break;
+        }
+        if (sortDir === 'desc') result = -result;
+        if (result !== 0) return result;
+      }
+      // Default sort fallback
       const considerationCompare = this.getConsideration(a.masterdata)
         .localeCompare(this.getConsideration(b.masterdata));
       if (considerationCompare !== 0) return considerationCompare;

@@ -38,6 +38,25 @@ export class StockAnalysisComponent implements OnInit {
   // Signal for favourite filter
   favouriteFilter = signal<'ALL' | 'FAVOURITE'>('ALL');
 
+  // Sort state
+  sortColumn = signal<'consideration' | 'sector' | 'companyname' | 'currentprice' | 'capital' | ''>('');
+  sortDirection = signal<'asc' | 'desc'>('asc');
+
+  setSort(column: 'consideration' | 'sector' | 'companyname' | 'currentprice' | 'capital') {
+    if (this.sortColumn() === column) {
+      if (this.sortDirection() === 'asc') {
+        this.sortDirection.set('desc');
+      } else {
+        // Third click: reset to default sort
+        this.sortColumn.set('');
+        this.sortDirection.set('asc');
+      }
+    } else {
+      this.sortColumn.set(column);
+      this.sortDirection.set('asc');
+    }
+  }
+
   // Computed signal for filtered stocks
   filteredStocks = computed(() => {
     const allStocks = this.stocks();
@@ -59,20 +78,35 @@ export class StockAnalysisComponent implements OnInit {
       return matchesSearch && matchesConsideration && matchesCap && matchesFavourite;
     });
 
+    const sortCol = this.sortColumn();
+    const sortDir = this.sortDirection();
     return filtered.sort((a, b) => {
-      const considerationCompare = this.getConsideration(a)
-        .localeCompare(this.getConsideration(b));
+      let result = 0;
+      if (sortCol) {
+        switch (sortCol) {
+          case 'consideration':
+            result = this.getConsideration(a).localeCompare(this.getConsideration(b));
+            break;
+          case 'sector':
+            result = (a.sector || '').localeCompare(b.sector || '');
+            break;
+          case 'companyname':
+            result = (a.companyname || '').localeCompare(b.companyname || '');
+            break;
+          case 'currentprice':
+            result = (parseFloat(a.currentprice) || 0) - (parseFloat(b.currentprice) || 0);
+            break;
+          case 'capital':
+            result = (a.capital || '').localeCompare(b.capital || '');
+            break;
+        }
+        if (sortDir === 'desc') result = -result;
+        if (result !== 0) return result;
+      }
+      // Default sort fallback
+      const considerationCompare = this.getConsideration(a).localeCompare(this.getConsideration(b));
       if (considerationCompare !== 0) return considerationCompare;
-
-      const companyCompare = (a.companyname || '')
-        .localeCompare(b.companyname || '');
-      if (companyCompare !== 0) return companyCompare;
-
-      const sectorCompare = (a.sector || '')
-        .localeCompare(b.sector || '');
-      if (sectorCompare !== 0) return sectorCompare;
-
-      return a.symbol.localeCompare(b.symbol);
+      return (a.companyname || '').localeCompare(b.companyname || '');
     });
   });
 

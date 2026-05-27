@@ -90,15 +90,15 @@
               <thead class="table-light">
                 <tr>
                   <th class="text-center">Favourite</th>
-                  <th class="text-center">Consideration</th>
-                  <th>Sector</th>
+                  <th class="text-center" (click)="setSort('consideration')" style="cursor:pointer; user-select:none;">Consideration @if (sortColumn()==='consideration') { <span>{{ sortDirection()==='asc' ? '▲' : '▼' }}</span> }</th>
+                  <th (click)="setSort('sector')" style="cursor:pointer; user-select:none;">Sector @if (sortColumn()==='sector') { <span>{{ sortDirection()==='asc' ? '▲' : '▼' }}</span> }</th>
                   <th>Ticker Symbol</th>
-                  <th>Company Name</th>
+                  <th (click)="setSort('companyname')" style="cursor:pointer; user-select:none;">Company Name @if (sortColumn()==='companyname') { <span>{{ sortDirection()==='asc' ? '▲' : '▼' }}</span> }</th>
                   <th class="text-center">CP < {{apiConfig.underValueThresholdPercent }}% of BP</th>
-                  <th class="text-end">Current Price</th>
+                  <th class="text-end" (click)="setSort('currentprice')" style="cursor:pointer; user-select:none;">Current Price @if (sortColumn()==='currentprice') { <span>{{ sortDirection()==='asc' ? '▲' : '▼' }}</span> }</th>
                   <th class="text-end">Best Price</th>
                   <th class="text-end">Over Price</th>
-                  <th>Cap</th>
+                  <th (click)="setSort('capital')" style="cursor:pointer; user-select:none;">Cap @if (sortColumn()==='capital') { <span>{{ sortDirection()==='asc' ? '▲' : '▼' }}</span> }</th>
                   <th>Remarks</th>
                 </tr>
               </thead>
