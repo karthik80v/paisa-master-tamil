@@ -64,12 +64,15 @@ export class StockAnalysisComponent implements OnInit {
         .localeCompare(this.getConsideration(b));
       if (considerationCompare !== 0) return considerationCompare;
 
+      const companyCompare = (a.companyname || '')
+        .localeCompare(b.companyname || '');
+      if (companyCompare !== 0) return companyCompare;
+
       const sectorCompare = (a.sector || '')
         .localeCompare(b.sector || '');
       if (sectorCompare !== 0) return sectorCompare;
 
-      return (a.companyname || '')
-        .localeCompare(b.companyname || '');
+      return a.symbol.localeCompare(b.symbol);
     });
   });
 

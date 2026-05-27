@@ -71,12 +71,15 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
         .localeCompare(this.getConsideration(b.masterdata));
       if (considerationCompare !== 0) return considerationCompare;
 
+      const companyCompare = (a.masterdata.companyname || '')
+        .localeCompare(b.masterdata.companyname || '');
+      if (companyCompare !== 0) return companyCompare;
+
       const sectorCompare = (a.masterdata.sector || '')
         .localeCompare(b.masterdata.sector || '');
       if (sectorCompare !== 0) return sectorCompare;
 
-      return (a.masterdata.companyname || '')
-        .localeCompare(b.masterdata.companyname || '');
+      return a.masterdata.symbol.localeCompare(b.masterdata.symbol);
     });
   });
 
