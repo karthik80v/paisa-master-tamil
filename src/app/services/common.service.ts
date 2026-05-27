@@ -17,11 +17,11 @@ export class CommonService {
 
     getConsideration(stock: StockData): Consideration {
         if (stock.manualrating === 'D') {
-            return { rating: 'P' as any, rowClass: 'row-red' };
+            return { rating: 'D' as any, rowClass: 'row-red' };
         }
 
         if (stock.manualrating === 'X') {
-            return { rating: 'D' as any, rowClass: 'row-analyze' };
+            return { rating: 'X' as any, rowClass: 'row-analyze' };
         }
 
         if (stock.manualrating === 'Auto') {

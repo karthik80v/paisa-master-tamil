@@ -30,7 +30,7 @@ export class StockAnalysisComponent implements OnInit {
   searchSymbol = signal('');
 
   // Signal for consideration filter buttons
-  considerationFilter = signal<'A' | 'B' | 'C' | 'D'  | 'P'| 'ALL'>('ALL');
+  considerationFilter = signal<'A' | 'B' | 'C' | 'X'  | 'D'| 'ALL'>('ALL');
 
   // Signal for CAP filter
   capFilter = signal<string>('ALL');
@@ -144,8 +144,8 @@ export class StockAnalysisComponent implements OnInit {
   /**
    * Determines the current consideration value for the row.
    */
-  getConsideration(stock: Stock): 'A' | 'B' | 'C' | 'D'  | 'P'{
-    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'D';
+  getConsideration(stock: Stock): 'A' | 'B' | 'C' | 'X'  | 'D'{
+    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'X';
   }
 
   clearSearch(): void {
@@ -156,7 +156,7 @@ export class StockAnalysisComponent implements OnInit {
     return `consideration-${this.getConsideration(stock).toLowerCase()}`;
   }
 
-  setConsiderationFilter(filter: 'A' | 'B' | 'C' | 'D'  | 'P'| 'ALL'): void {
+  setConsiderationFilter(filter: 'A' | 'B' | 'C' | 'X'  | 'D'| 'ALL'): void {
     this.considerationFilter.set(filter);
   }
 
