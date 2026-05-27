@@ -1,3 +1,15 @@
+/* Analyze button outline style */
+.btn-outline-analyze {
+  color: #6a1f8d;
+  border-color: #6a1f8d;
+  background-color: transparent;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+.btn-outline-analyze:hover, .btn-outline-analyze:active, .btn-outline-analyze.active {
+  color: #fff;
+  background-color: #6a1f8d;
+  border-color: #6a1f8d;
+}
 /* Common component styles shared across stock analysis, portfolio, and sectorwise screens */
 
 /* Row styling - lighter background colors matching font colors */
@@ -49,13 +61,46 @@
   background-color: #bee5eb !important;
 }
 
+.table tbody tr.row-analyze,
+.table tbody tr.row-analyze > td {
+  background-color: #efdff6 !important;
+  color: #6a1f8d !important;
+  font-weight: 500 !important;
+}
+
+.table tbody tr.row-analyze:hover,
+.table tbody tr.row-analyze:hover > td {
+  background-color: #efdff6 !important;
+}
+
+
+.consideration-a {
+  background-color: #28a745 !important;
+}
+
+.consideration-b {
+  background-color: #0D56F2 !important;
+}
+
+.consideration-c {
+  background-color: #e39b0a !important;
+}
+
+.consideration-d {
+  background-color: #6a1f8d !important;
+}
+
+.consideration-p {
+  background-color: #dc3545 !important;
+}
+
 /* Table styling */
 .table {
   margin-bottom: 0;
 }
 
-.table tbody tr:not(.row-red):not(.row-green):not(.row-amber):not(.row-blue),
-.table tbody tr:not(.row-red):not(.row-green):not(.row-amber):not(.row-blue) > td {
+.table tbody tr:not(.row-red):not(.row-green):not(.row-amber):not(.row-blue):not(.row-analyze),
+.table tbody tr:not(.row-red):not(.row-green):not(.row-amber):not(.row-blue):not(.row-analyze) > td {
   background-color: transparent !important;
 }
 
@@ -101,22 +146,6 @@
   color: #fff;
   font-size: 0.9rem;
   text-transform: uppercase;
-}
-
-.consideration-a {
-  background-color: #28a745 !important;
-}
-
-.consideration-b {
-  background-color: #0D56F2 !important;
-}
-
-.consideration-c {
-  background-color: #e39b0a !important;
-}
-
-.consideration-d {
-  background-color: #dc3545 !important;
 }
 
 /* Code styling for symbol */

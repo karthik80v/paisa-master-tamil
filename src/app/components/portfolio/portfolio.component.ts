@@ -30,7 +30,7 @@ export class PortfolioComponent implements OnInit {
   searchSymbol = signal('');
 
   // Signal for consideration filter buttons
-  considerationFilter = signal<'A' | 'B' | 'C' | 'D' | 'ALL'>('ALL');
+  considerationFilter = signal<'A' | 'B' | 'C' | 'D'  | 'P'| 'ALL'>('ALL');
 
   // Signal for CAP filter
   capFilter = signal<string>('ALL');
@@ -129,7 +129,7 @@ export class PortfolioComponent implements OnInit {
   /**
    * Determines the current consideration value for the row.
    */
-  getConsideration(stock: any): 'A' | 'B' | 'C' | 'D' {
+  getConsideration(stock: any): 'A' | 'B' | 'C' | 'D'  | 'P'{
     return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'D'; 
   }
 
@@ -137,7 +137,7 @@ export class PortfolioComponent implements OnInit {
     return `consideration-${this.getConsideration(item.masterdata).toLowerCase()}`;
   }
 
-  setConsiderationFilter(filter: 'A' | 'B' | 'C' | 'D' | 'ALL'): void {
+  setConsiderationFilter(filter: 'A' | 'B' | 'C' | 'D'  | 'P'| 'ALL'): void {
     this.considerationFilter.set(filter);
   }
 
