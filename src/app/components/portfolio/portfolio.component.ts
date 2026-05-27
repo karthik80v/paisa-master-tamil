@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, signal, computed, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PortfolioService } from '../../services/portfolio.service';
@@ -14,7 +14,9 @@ import { API_CONFIG } from '../../config/api.config';
   styleUrls: ['../common-styles.css', './portfolio.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PortfolioComponent implements OnInit {
+export class PortfolioComponent implements OnInit, AfterViewChecked {
+    @ViewChild('editInput') editInput!: ElementRef<HTMLInputElement>;
+    private shouldFocusInput = false;
   // Signal for portfolio data
   portfolio = signal<PortfolioItem[]>([]);
 
@@ -166,6 +168,13 @@ export class PortfolioComponent implements OnInit {
   startEditingRow(itemId: number, currentValue: string): void {
     this.editingRowId.set(itemId);
     this.editingRowValue.set(currentValue);
+    this.shouldFocusInput = true;
+  }
+  ngAfterViewChecked(): void {
+    if (this.shouldFocusInput && this.editInput) {
+      this.editInput.nativeElement.focus();
+      this.shouldFocusInput = false;
+    }
   }
 
   /**
