@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
   isEditingSettings = signal(false);
   thresholdDraft = signal<number>(0);
   countryDraft = signal<string>('India');
+  newStockDaysDraft = signal<number>(7);
   readonly countryOptions: Country[];
 
   constructor(
@@ -97,6 +98,7 @@ export class ProfileComponent implements OnInit {
   editThreshold(): void {
     this.thresholdDraft.set(this.settingsService.underValueThresholdPercent());
     this.countryDraft.set(this.settingsService.defaultCountry().name);
+    this.newStockDaysDraft.set(this.settingsService.newStockDaysThreshold());
     this.isEditingSettings.set(true);
   }
 
@@ -117,6 +119,10 @@ export class ProfileComponent implements OnInit {
     const selected = this.countryOptions.find(c => c.name === this.countryDraft());
     if (selected) {
       this.settingsService.setDefaultCountry(selected);
+    }
+    const newStockDays = Number(this.newStockDaysDraft());
+    if (!isNaN(newStockDays) && newStockDays > 0) {
+      this.settingsService.setNewStockDaysThreshold(newStockDays);
     }
     this.isEditingSettings.set(false);
   }

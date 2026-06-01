@@ -9,6 +9,7 @@ export interface Country {
 
 const THRESHOLD_KEY = 'app.settings.underValueThresholdPercent';
 const COUNTRY_KEY = 'app.settings.defaultCountry';
+const NEW_STOCK_DAYS_KEY = 'app.settings.newStockDaysThreshold';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsService {
@@ -17,6 +18,9 @@ export class SettingsService {
 
   // Reactive signal mirroring API_CONFIG.defaultCountry
   defaultCountry = signal<Country>(API_CONFIG.defaultCountry);
+
+  // Reactive signal for new stock badge threshold (days)
+  newStockDaysThreshold = signal<number>(API_CONFIG.newStockDaysThreshold);
 
   private readonly countries: Country[] = [
     { currency: 'INR', name: 'India', shortname: 'India' },
@@ -43,6 +47,16 @@ export class SettingsService {
         this.defaultCountry.set(match);
       }
     }
+
+    // Hydrate new stock days threshold from localStorage
+    const storedNewStockDays = localStorage.getItem(NEW_STOCK_DAYS_KEY);
+    if (storedNewStockDays !== null) {
+      const parsed = parseInt(storedNewStockDays, 10);
+      if (!isNaN(parsed)) {
+        API_CONFIG.newStockDaysThreshold = parsed;
+        this.newStockDaysThreshold.set(parsed);
+      }
+    }
   }
 
   getCountries(): Country[] {
@@ -59,5 +73,11 @@ export class SettingsService {
     API_CONFIG.defaultCountry = value;
     this.defaultCountry.set(value);
     localStorage.setItem(COUNTRY_KEY, value.name);
+  }
+
+  setNewStockDaysThreshold(value: number): void {
+    API_CONFIG.newStockDaysThreshold = value;
+    this.newStockDaysThreshold.set(value);
+    localStorage.setItem(NEW_STOCK_DAYS_KEY, String(value));
   }
 }

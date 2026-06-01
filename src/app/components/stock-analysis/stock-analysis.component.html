@@ -115,7 +115,11 @@
                     </td>
                     <td>{{ stock.sector }}</td>
                     <td>{{ stock.symbol }}</td>
-                    <td class="companyname-col">{{ stock.companyname }}</td>
+                    <td class="companyname-col">{{ stock.companyname }}
+                      @if (isNewStock(stock.createdAt)) {
+                        <span class="badge-new">NEW!</span>
+                      }
+                    </td>
                     <td class="text-center">
                       @if(stock.manualrating == "Auto" && +stock.currentprice < +stock.bestprice - (+stock.bestprice * apiConfig.underValueThresholdPercent / 100)) {
                         <i class="bi-emoji-smile"></i>

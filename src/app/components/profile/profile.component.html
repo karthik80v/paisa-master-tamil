@@ -133,6 +133,23 @@
                         }
                       </td>
                     </tr>
+                    <tr>
+                      <td class="label-cell">NEW! Badge Threshold</td>
+                      <td class="value-cell">
+                        @if (!isEditingSettings()) {
+                          <span class="setting-value">{{ settingsService.newStockDaysThreshold() }} days</span>
+                        } @else {
+                          <input
+                            type="number"
+                            class="form-control form-control-sm setting-input"
+                            [ngModel]="newStockDaysDraft()"
+                            (ngModelChange)="newStockDaysDraft.set($event)"
+                            min="1"
+                            max="90"
+                            step="1" />
+                        }
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

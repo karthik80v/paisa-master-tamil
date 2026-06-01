@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StockService } from '../../services/stock.service';
 import { CommonService } from '../../services/common.service';
+import { SettingsService } from '../../services/settings.service';
 import { Stock } from '../../models/stock.model';
 import { API_CONFIG } from '../../config/api.config';
 
@@ -110,7 +111,7 @@ export class StockAnalysisComponent implements OnInit {
     });
   });
 
-  constructor(private stockService: StockService, private commonService: CommonService) {}
+  constructor(private stockService: StockService, private commonService: CommonService, private settingsService: SettingsService) {}
 
   ngOnInit(): void {
     this.fetchStocks();
@@ -181,6 +182,16 @@ export class StockAnalysisComponent implements OnInit {
   formatPrice(price: string): string {
     const numPrice = parseFloat(price);
     return isNaN(numPrice) ? '-' : '₹' + numPrice.toFixed(2);
+  }
+
+  isNewStock(createdAt: string): boolean {
+    if (!createdAt) return false;
+    const created = new Date(createdAt);
+    const today = new Date();
+    const createdDate = new Date(created.getFullYear(), created.getMonth(), created.getDate());
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const diffDays = (todayDate.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
+    return diffDays <= this.settingsService.newStockDaysThreshold();
   }
 
   toggleFavourite(stock: Stock): void {
