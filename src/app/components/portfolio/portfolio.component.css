@@ -17,10 +17,16 @@
 
 .btn-sm {
   padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
 }
 
 /* Ensure the edit row buttons align properly */
 .text-end .d-flex {
   align-items: center;
 }
+#war_room .btn {
+  border: none;
+  display: inline-block;
+  animation: pulse-new 1.5s ease-in-out infinite;
+}
+

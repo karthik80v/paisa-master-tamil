@@ -1,8 +1,18 @@
 <div class="container-fluid">
   <div class="card shadow">
     <!-- Header -->
-    <div class="card-header text-white">
+    <div class="card-header text-white d-flex align-items-center justify-content-between">
       <h2 class="mb-0 text-white">Portfolio</h2>
+      <div id="war_room">
+        @if (warRoomLink()) {
+          <a [href]="warRoomLink()" target="_blank" rel="noopener noreferrer"
+             class="btn btn-sm fw-semibold"
+             [class.btn-danger]="warRoomActive()"
+             [class.btn-light]="!warRoomActive()">
+            <i class="bi bi-camera-video-fill me-2"></i>{{ warRoomTitle() }}
+          </a>
+        }
+      </div>
     </div>
 
     <div class="card-body">

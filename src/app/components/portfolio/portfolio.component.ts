@@ -1,6 +1,7 @@
 import { Component, OnInit, signal, computed, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { PortfolioService } from '../../services/portfolio.service';
 import { CommonService } from '../../services/common.service';
 import { PortfolioItem } from '../../models/portfolio.model';
@@ -24,6 +25,11 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
 
   // Signal for loading state
   isLoading = signal(true);
+
+  // Signal for War Room Google Meet link
+  warRoomLink = signal<string | null>(null);
+  warRoomTitle = signal<string | null>(null);
+  warRoomActive = signal<boolean>(false);
 
   // Signal for error state
   error = signal<string | null>(null);
@@ -136,10 +142,68 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
     });
   });
 
-  constructor(private portfolioService: PortfolioService, private cdr: ChangeDetectorRef, private commonService: CommonService) {}
+  constructor(private portfolioService: PortfolioService, private cdr: ChangeDetectorRef, private commonService: CommonService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.fetchPortfolio();
+    this.fetchWarRoomLink();
+  }
+
+  private fetchWarRoomLink(): void {
+    this.http.get<any[]>('https://paisamastertamil.com/share/testimonial/full').subscribe({
+      next: (items) => {
+        const warRoomItem = items?.find(item =>
+          item.title?.toLowerCase().includes('war room') ||
+          item.description?.toLowerCase().includes('war room')
+        );
+        if (warRoomItem) {
+          const meetMatch = (warRoomItem.description || '').match(/https:\/\/meet\.google\.com\/[^\s]+/);
+          if (meetMatch) {
+            this.warRoomLink.set(meetMatch[0]);
+            this.warRoomTitle.set(warRoomItem.title || 'Open War Room');
+            this.warRoomActive.set(this.isWarRoomInProgress(warRoomItem.title || ''));
+            this.cdr.markForCheck();
+          }
+        }
+      },
+      error: (err) => console.error('Error fetching testimonials:', err)
+    });
+  }
+
+  private isWarRoomInProgress(title: string): boolean {
+    // Example title: "War Room On 7th June 2026 @9AM to12PM"
+    const dateMatch = title.match(/(\d{1,2})(?:st|nd|rd|th)\s+(\w+)\s+(\d{4})/i);
+    const timeMatch = title.match(/@(\d{1,2}(?::\d{2})?(?:AM|PM))\s*to\s*(\d{1,2}(?::\d{2})?(?:AM|PM))/i);
+
+    if (!dateMatch || !timeMatch) return false;
+
+    const day = parseInt(dateMatch[1], 10);
+    const monthNames = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+    const month = monthNames.indexOf(dateMatch[2].toLowerCase());
+    const year = parseInt(dateMatch[3], 10);
+    if (month === -1) return false;
+
+    const parseTime = (t: string): { h: number; m: number } => {
+      const tm = t.match(/(\d{1,2})(?::(\d{2}))?(AM|PM)/i);
+      if (!tm) return { h: 0, m: 0 };
+      let h = parseInt(tm[1], 10);
+      const m = tm[2] ? parseInt(tm[2], 10) : 0;
+      const ampm = tm[3].toUpperCase();
+      if (ampm === 'PM' && h !== 12) h += 12;
+      if (ampm === 'AM' && h === 12) h = 0;
+      return { h, m };
+    };
+
+    const start = parseTime(timeMatch[1]);
+    const end = parseTime(timeMatch[2]);
+
+    // IST = UTC+5:30; treat extracted hours/minutes as IST and convert to UTC
+    const IST_OFFSET_MS = (5 * 60 + 30) * 60 * 1000;
+    const startUTC = new Date(Date.UTC(year, month, day, start.h, start.m) - IST_OFFSET_MS);
+    const endUTC   = new Date(Date.UTC(year, month, day, end.h,   end.m)   - IST_OFFSET_MS);
+
+    const now = new Date();
+    return now >= startUTC && now <= endUTC;
   }
 
   private fetchPortfolio(): void {
