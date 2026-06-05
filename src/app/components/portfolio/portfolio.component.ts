@@ -53,6 +53,9 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
   // Signal for tracking save/loading state
   savingRowId = signal<number | null>(null);
 
+  // Signal for current value visibility toggle
+  showCurrentValue = signal<boolean>(false);
+
   // Sort state
   sortColumn = signal<'consideration' | 'sector' | 'companyname' | 'currentprice' | 'capital' | 'investmentvalue' | 'noofstocks' | ''>('');
   sortDirection = signal<'asc' | 'desc'>('asc');
@@ -244,6 +247,10 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
 
   clearSearch(): void {
     this.searchSymbol.set('');
+  }
+
+  toggleCurrentValue(): void {
+    this.showCurrentValue.set(!this.showCurrentValue());
   }
 
   /**

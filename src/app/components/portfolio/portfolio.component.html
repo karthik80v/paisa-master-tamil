@@ -76,8 +76,18 @@
             <span class="consideration-circle consideration-d">D</span> Poor Performance&nbsp;&nbsp;
             <span class="consideration-circle consideration-x">X</span> Needs Analysis
           </div>&nbsp;
-          <div class="ms-auto">
-            <strong>Current Value: {{ formatPrice(getTotalInvested().toString()) }}</strong>
+          <div id="currentValue" class="ms-auto">
+            <strong>Current Value:
+            <span class="ms-2">{{ showCurrentValue() ? formatPrice(getTotalInvested().toString()) : 'XXXXXXXXXX' }}</span>
+            </strong>
+            <button
+              type="button"
+              class="btn btn-link p-0 ms-2 align-baseline"
+              style="text-decoration: none;"
+              title="Show/Hide current value"
+              (click)="toggleCurrentValue()">
+              <i class="bi fs-5" [class.bi-eye]="!showCurrentValue()" [class.bi-eye-slash]="showCurrentValue()"></i>
+            </button>
           </div>
         </div>
         @if (searchSymbol() || considerationFilter() !== 'ALL' || capFilter() !== 'ALL') {
