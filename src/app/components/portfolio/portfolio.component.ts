@@ -30,6 +30,7 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
   warRoomLink = signal<string | null>(null);
   warRoomTitle = signal<string | null>(null);
   warRoomActive = signal<boolean>(false);
+  inductionRoomActive = signal<boolean>(false);
 
   // Signal for error state
   error = signal<string | null>(null);
@@ -38,7 +39,7 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
   searchSymbol = signal('');
 
   // Signal for consideration filter buttons
-  considerationFilter = signal<'A' | 'B' | 'C' | 'X'  | 'D'| 'ALL'>('ALL');
+  considerationFilter = signal<'A' | 'B' | 'C' | 'D' | 'E' | 'X' | 'ALL'>('ALL');
 
   // Signal for CAP filter
   capFilter = signal<string>('ALL');
@@ -162,12 +163,17 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
             this.warRoomLink.set(meetMatch[0]);
             this.warRoomTitle.set(warRoomItem.title || 'Open War Room');
             this.warRoomActive.set(this.isWarRoomInProgress(warRoomItem.title || ''));
+            this.inductionRoomActive.set(this.isInductionRoomInProgress(warRoomItem.title || ''));
             this.cdr.markForCheck();
           }
         }
       },
       error: (err) => console.error('Error fetching testimonials:', err)
     });
+  }
+
+  private isInductionRoomInProgress(title: string): boolean {
+    return true;
   }
 
   private isWarRoomInProgress(title: string): boolean {
@@ -251,15 +257,15 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
   /**
    * Determines the current consideration value for the row.
    */
-  getConsideration(stock: any): 'A' | 'B' | 'C' | 'X'  | 'D'{
-    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'X'; 
+  getConsideration(stock: any): 'A' | 'B' | 'C' | 'D' | 'E' | 'X'{
+    return this.commonService.getConsideration(stock).rating as 'A' | 'B' | 'C' | 'D' | 'E' | 'X'; 
   }
 
   getConsiderationClass(item: PortfolioItem): string {
     return `consideration-${this.getConsideration(item.masterdata).toLowerCase()}`;
   }
 
-  setConsiderationFilter(filter: 'A' | 'B' | 'C' | 'X'  | 'D'| 'ALL'): void {
+  setConsiderationFilter(filter: 'A' | 'B' | 'C' | 'D' | 'E' | 'X' | 'ALL'): void {
     this.considerationFilter.set(filter);
   }
 

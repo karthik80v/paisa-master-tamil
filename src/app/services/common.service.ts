@@ -19,8 +19,10 @@ export class CommonService {
         if (stock.manualrating === 'D') {
             return { rating: 'D' as any, rowClass: 'row-red' };
         }
-
-        if (stock.manualrating === 'X') {
+        else if (stock.manualrating === 'E') {
+            return { rating: 'E' as any, rowClass: 'row-etf' };
+        }
+        else if (stock.manualrating === 'X') {
             return { rating: 'X' as any, rowClass: 'row-analyze' };
         }
 

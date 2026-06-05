@@ -29,6 +29,7 @@
             <button type="button" class="btn btn-outline-success" [class.active]="considerationFilter() === 'A'" (click)="setConsiderationFilter('A')">A</button>&nbsp;
             <button type="button" class="btn btn-outline-info" [class.active]="considerationFilter() === 'B'" (click)="setConsiderationFilter('B')">B</button>&nbsp;
             <button type="button" class="btn btn-outline-warning" [class.active]="considerationFilter() === 'C'" (click)="setConsiderationFilter('C')">C</button>&nbsp;
+            <button type="button" class="btn btn-outline-secondary" [class.active]="considerationFilter() === 'E'" (click)="setConsiderationFilter('E')">E</button>&nbsp;
             <button type="button" class="btn btn-outline-analyze" [class.active]="considerationFilter() === 'X'" (click)="setConsiderationFilter('X')">X</button>&nbsp;
             <button type="button" class="btn btn-outline-danger" [class.active]="considerationFilter() === 'D'" (click)="setConsiderationFilter('D')">D</button>&nbsp;
             <button type="button" class="btn btn-outline-secondary" [class.active]="considerationFilter() === 'ALL'" (click)="setConsiderationFilter('ALL')">All</button>
@@ -54,6 +55,7 @@
             <span class="consideration-circle consideration-b">B</span> Fairly Valued&nbsp;&nbsp;
             <span class="consideration-circle consideration-c">C</span> Overvalued&nbsp;&nbsp;
             <span class="consideration-circle consideration-d">D</span> Poor Performance&nbsp;&nbsp;
+            <span class="consideration-circle consideration-e">E</span> Exchange Traded Fund (ETF)&nbsp;&nbsp;
             <span class="consideration-circle consideration-x">X</span> Needs Analysis
           </div>
         </div>
