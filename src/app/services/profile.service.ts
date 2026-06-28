@@ -30,4 +30,19 @@ export class ProfileService {
       })
     );
   }
+
+  getUserProfileById(userId: number): Observable<User> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `${this.authToken}`
+    });
+
+    return this.http.get<User>(`${this.baseUrl}/share/users/find/${userId}`, { headers }).pipe(
+      timeout(this.requestTimeoutMs),
+      catchError((error) => {
+        console.error('Error fetching user profile:', error);
+        return throwError(() => new Error('Failed to fetch user profile data'));
+      })
+    );
+  }
 }

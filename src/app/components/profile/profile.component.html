@@ -160,6 +160,13 @@
               <div class="settings-actions">
                 @if (!isEditingSettings()) {
                   <button type="button" class="btn btn-sm btn-primary setting-btn" (click)="editThreshold()">Edit</button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-info setting-btn"
+                    (click)="downloadUsers()"
+                    [disabled]="isDownloading()">
+                    {{ isDownloading() ? 'Downloading...' : 'Download' }}
+                  </button>
                 } @else {
                   <button type="button" class="btn btn-sm btn-secondary setting-btn" (click)="cancelThresholdEdit()">Cancel</button>
                   <button type="button" class="btn btn-sm btn-success setting-btn" (click)="saveThreshold()">Save</button>
