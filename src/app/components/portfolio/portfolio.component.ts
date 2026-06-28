@@ -176,7 +176,27 @@ export class PortfolioComponent implements OnInit, AfterViewChecked {
   }
 
   private isInductionRoomInProgress(title: string): boolean {
-    return true;
+    void title;
+
+    const now = new Date();
+    const istParts = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'Asia/Kolkata',
+      weekday: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).formatToParts(now);
+
+    const weekday = istParts.find(part => part.type === 'weekday')?.value;
+    const hour = Number(istParts.find(part => part.type === 'hour')?.value ?? '0');
+    const minute = Number(istParts.find(part => part.type === 'minute')?.value ?? '0');
+
+    const isFridayIST = weekday === 'Fri';
+    const minutesSinceMidnight = (hour * 60) + minute;
+    const startMinutes = 8.5 * 60;  // 08:30 AM IST
+    const endMinutes = 11.5 * 60;   // 11:30 AM IST
+
+    return isFridayIST && minutesSinceMidnight >= startMinutes && minutesSinceMidnight < endMinutes;
   }
 
   private isWarRoomInProgress(title: string): boolean {

@@ -41,11 +41,15 @@
                   <tbody>
                     <tr>
                       <td class="label-cell">Full Name</td>
-                      <td class="value-cell">{{ user()?.fullname }}</td>
+                      <td class="value-cell">
+                        {{ showPersonalDetails() ? user()?.fullname : 'X X X X X X X X X X' }}
+                      </td>
                     </tr>
                     <tr>
                       <td class="label-cell">Gender</td>
-                      <td class="value-cell">{{ user()?.gender | titlecase }}</td>
+                      <td class="value-cell">
+                        {{ showPersonalDetails() ? (user()?.gender | titlecase) : 'X X X X X X X X X X' }}
+                      </td>
                     </tr>
                     <tr>
                       <td class="label-cell">Date of Birth</td>
